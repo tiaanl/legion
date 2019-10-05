@@ -1,6 +1,6 @@
-#include "reactor/Resources/Converters/ImageConverter.h"
+#include "legion/Resources/Converters/ImageConverter.h"
 
-namespace re {
+namespace le {
 
 bool ImageConverter::load(hi::ResourceManager* UNUSED(resourceManager), const nu::StringView& name,
                           nu::InputStream* inputStream, si::Image* storage) {
@@ -14,4 +14,4 @@ bool ImageConverter::load(hi::ResourceManager* UNUSED(resourceManager), const nu
   return true;
 }
 
-}  // namespace re
+}  // namespace le
