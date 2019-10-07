@@ -77,7 +77,7 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
   }
 }
 
-static void createNode(si::Node* src, Node* dst) {
+static void createNode(si::Node* src, ModelNode* dst) {
   dst->transform = src->transform;
   for (auto& meshIndex : src->meshIndices) {
     dst->meshIndices.emplaceBack(meshIndex);

@@ -34,20 +34,20 @@ struct Mesh {
   ca::VertexBufferId vertexBufferId;
 };
 
-struct Node {
+struct ModelNode {
   ca::Mat4 transform;
   nu::DynamicArray<MemSize> meshIndices;
   // std::vector<Node> children;
-  nu::DynamicArray<Node> children;
+  nu::DynamicArray<ModelNode> children;
 
-  Node() : transform(ca::Mat4::identity) {}
-  explicit Node(const ca::Mat4& transform) : transform{transform} {}
+  ModelNode() : transform(ca::Mat4::identity) {}
+  explicit ModelNode(const ca::Mat4& transform) : transform{transform} {}
 };
 
 struct Model {
   nu::DynamicArray<Mesh> meshes;
   nu::DynamicArray<Material> materials;
-  Node rootNode;
+  ModelNode rootNode;
 };
 
 }  // namespace le
