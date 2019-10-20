@@ -19,11 +19,11 @@ void renderNode(ca::Renderer* renderer, const Model& model, const ModelNode& nod
     uniforms.set(material.transformUniformId, t);
 
     if (material.type == MaterialType::Textured) {
-      renderer->draw(mesh.drawType, mesh.vertexCount, material.programId, mesh.vertexBufferId,
+      renderer->draw(mesh.drawType, mesh.vertexCount, 0, material.programId, mesh.vertexBufferId,
                      material.diffuse.texture->id, uniforms);
     } else {
-      renderer->draw(mesh.drawType, mesh.vertexCount, material.programId, mesh.vertexBufferId, {},
-                     uniforms);
+      renderer->draw(mesh.drawType, mesh.vertexCount, 0, material.programId, mesh.vertexBufferId,
+                     {}, uniforms);
     }
   }
 
