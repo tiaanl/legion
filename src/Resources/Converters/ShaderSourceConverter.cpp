@@ -2,9 +2,9 @@
 
 namespace le {
 
-bool ShaderSourceConverter::load(hi::ResourceManager* UNUSED(resourceManager),
-                                 const nu::StringView& name, nu::InputStream* inputStream,
-                                 ca::ShaderSource* storage) {
+bool ShaderSourceConverter::load(hi::ResourceManager* NU_UNUSED(resourceManager),
+                                 const nu::StringView& NU_UNUSED(name),
+                                 nu::InputStream* inputStream, ca::ShaderSource* storage) {
   return storage->loadFromStream(inputStream);
 }
 

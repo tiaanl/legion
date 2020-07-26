@@ -2,8 +2,9 @@
 
 namespace le {
 
-bool ImageConverter::load(hi::ResourceManager* UNUSED(resourceManager), const nu::StringView& name,
-                          nu::InputStream* inputStream, si::Image* storage) {
+bool ImageConverter::load(hi::ResourceManager* NU_UNUSED(resourceManager),
+                          const nu::StringView& name, nu::InputStream* inputStream,
+                          si::Image* storage) {
   bool result = storage->loadFromStream(inputStream);
 
   if (!result) {

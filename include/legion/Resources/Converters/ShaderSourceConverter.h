@@ -8,12 +8,12 @@ namespace le {
 
 class ShaderSourceConverter : public RendererConverter<ca::ShaderSource> {
 public:
+  NU_DELETE_COPY_AND_MOVE(ShaderSourceConverter);
+
   ShaderSourceConverter() = default;
   ~ShaderSourceConverter() override = default;
 
 private:
-  DELETE_COPY_AND_MOVE(ShaderSourceConverter);
-
   bool load(hi::ResourceManager* resourceManager, const nu::StringView& name,
             nu::InputStream* inputStream, ca::ShaderSource* storage) override;
 };

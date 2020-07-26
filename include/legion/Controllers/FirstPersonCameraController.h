@@ -1,13 +1,15 @@
 #ifndef AD_FIRST_PERSON_CAMERA_INPUT_CONTROLLER_H_
 #define AD_FIRST_PERSON_CAMERA_INPUT_CONTROLLER_H_
 
-#include "legion/Controllers/CameraController.h"
 #include "canvas/Math/Vec3.h"
+#include "legion/Controllers/CameraController.h"
 
 namespace le {
 
 class FirstPersonCameraController : public CameraController {
 public:
+  NU_DELETE_COPY_AND_MOVE(FirstPersonCameraController);
+
   explicit FirstPersonCameraController(Camera* camera, F32 mouseSensitivity = 1.0f);
 
   // Override: CameraController
@@ -20,8 +22,6 @@ public:
   void tick(F32 delta) override;
 
 private:
-  DELETE_COPY_AND_MOVE(FirstPersonCameraController);
-
   // The speed at which the camera on mouse movement.
   F32 m_mouseSensitivity;
 

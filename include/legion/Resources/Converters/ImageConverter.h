@@ -8,14 +8,13 @@ namespace le {
 
 class ImageConverter : public hi::Converter<si::Image> {
 public:
+  NU_DELETE_COPY_AND_MOVE(ImageConverter);
+
   ImageConverter() = default;
 
   // Override: hi::Converter
   bool load(hi::ResourceManager* resourceManager, const nu::StringView& name,
             nu::InputStream* inputStream, si::Image* storage) override;
-
-private:
-  DELETE_COPY_AND_MOVE(ImageConverter);
 };
 
 }  // namespace le

@@ -7,7 +7,7 @@
 namespace le {
 
 bool TextureConverter::load(hi::ResourceManager* resourceManager, const nu::StringView& name,
-                            nu::InputStream* UNUSED(inputStream), Texture* storage) {
+                            nu::InputStream* NU_UNUSED(inputStream), Texture* storage) {
   auto* image = resourceManager->get<si::Image>(name);
 
   auto textureId = m_renderer->createTexture(image->format(), image->size(), image->data(),

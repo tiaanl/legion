@@ -1,4 +1,5 @@
 #include "legion/Controllers/FirstPersonCameraController.h"
+
 #include "legion/World/Camera.h"
 
 namespace le {
@@ -32,13 +33,13 @@ void FirstPersonCameraController::onMousePressed(ca::MouseEvent::Button button,
 }
 
 void FirstPersonCameraController::onMouseReleased(ca::MouseEvent::Button button,
-                                                  const ca::Vec2& UNUSED(position)) {
+                                                  const ca::Vec2& NU_UNUSED(position)) {
   if (button == ca::MouseEvent::Button::Left) {
     m_mouseIsDown = false;
   }
 }
 
-void FirstPersonCameraController::onMouseWheel(const ca::Vec2& UNUSED(offset)) {}
+void FirstPersonCameraController::onMouseWheel(const ca::Vec2& NU_UNUSED(offset)) {}
 
 void FirstPersonCameraController::onKeyPressed(ca::Key key) {
   switch (key) {

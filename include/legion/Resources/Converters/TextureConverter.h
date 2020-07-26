@@ -8,15 +8,14 @@ namespace le {
 
 class TextureConverter : public RendererConverter<Texture> {
 public:
+  NU_DELETE_COPY_AND_MOVE(TextureConverter);
+
   explicit TextureConverter() = default;
   ~TextureConverter() override = default;
 
   // Override: hi::Converter
   bool load(hi::ResourceManager* resourceManager, const nu::StringView& name,
             nu::InputStream* inputStream, Texture* storage) override;
-
-private:
-  DELETE_COPY_AND_MOVE(TextureConverter);
 };
 
 }  // namespace le

@@ -8,6 +8,8 @@ namespace le {
 
 class OrbitCameraController : public CameraController {
 public:
+  NU_DELETE_COPY_AND_MOVE(OrbitCameraController);
+
   OrbitCameraController(Camera* camera, const ca::Vec3& origin);
 
   // Override: CameraController
@@ -20,8 +22,6 @@ public:
   void tick(F32 delta) override;
 
 private:
-  DELETE_COPY_AND_MOVE(OrbitCameraController);
-
   ca::Vec3 m_origin;
   ca::Angle m_horizontal = ca::Angle::zero;
   ca::Angle m_vertical = ca::Angle::zero;

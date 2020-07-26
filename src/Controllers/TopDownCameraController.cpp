@@ -1,4 +1,5 @@
 #include "legion/Controllers/TopDownCameraController.h"
+
 #include "canvas/Math/Intersection.h"
 
 namespace le {
@@ -34,7 +35,7 @@ void TopDownCameraController::onMousePressed(ca::MouseEvent::Button button,
 }
 
 void TopDownCameraController::onMouseReleased(ca::MouseEvent::Button button,
-                                              const ca::Vec2& UNUSED(position)) {
+                                              const ca::Vec2& NU_UNUSED(position)) {
   if (button == ca::MouseEvent::Button::Right) {
     m_movement.isMoving = false;
   }

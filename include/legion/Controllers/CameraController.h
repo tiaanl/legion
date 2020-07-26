@@ -8,6 +8,8 @@ namespace le {
 
 class CameraController {
 public:
+  NU_DELETE_COPY_AND_MOVE(CameraController);
+
   explicit CameraController(Camera* camera) : m_camera{camera} {}
 
   Camera* camera() const {
@@ -24,9 +26,6 @@ public:
 
 protected:
   Camera* m_camera;
-
-private:
-  DELETE_COPY_AND_MOVE(CameraController);
 };
 
 }  // namespace le

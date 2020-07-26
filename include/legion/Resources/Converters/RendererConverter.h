@@ -12,6 +12,8 @@ namespace le {
 template <typename ResourceType>
 class RendererConverter : public hi::Converter<ResourceType> {
 public:
+  NU_DELETE_COPY_AND_MOVE(RendererConverter);
+
   RendererConverter() = default;
 
   void setRenderer(ca::Renderer* renderer) {
@@ -20,9 +22,6 @@ public:
 
 protected:
   ca::Renderer* m_renderer = nullptr;
-
-private:
-  DELETE_COPY_AND_MOVE(RendererConverter);
 };
 
 }  // namespace le

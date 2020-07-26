@@ -16,8 +16,8 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
 
   DCHECK(src->positions.size() == src->texCoords.size());
 
-  nu::DynamicArray<V> buffer{src->positions.size(),
-                             {ca::Vec3::zero, ca::Vec2::zero, ca::Color::black}};
+  auto buffer = nu::DynamicArray<V>::withInitialSize(
+      src->positions.size(), {ca::Vec3::zero, ca::Vec2::zero, ca::Color::black});
   for (MemSize i = 0; i < src->positions.size(); ++i) {
     buffer.emplaceBack(src->positions[i], src->texCoords[i], ca::Color::red);
   }
@@ -45,7 +45,7 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
     // Diffuse
     dst->diffuse.color = src->diffuse.color;
 
-    if (!src->diffuse.texture.isEmpty()) {
+    if (!src->diffuse.texture.empty()) {
       dst->diffuse.texture = resourceManager->get<Texture>(src->diffuse.texture);
     }
   }
@@ -98,8 +98,9 @@ ModelConverter::ModelConverter() {
   m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Four, "color");
 }
 
-bool ModelConverter::load(hi::ResourceManager* resourceManager, const nu::StringView& name,
-                          nu::InputStream* inputStream, Model* model) {
+bool ModelConverter::load(hi::ResourceManager* resourceManager,
+                          const nu::StringView& NU_UNUSED(name), nu::InputStream* inputStream,
+                          Model* model) {
   if (!m_renderer) {
     LOG(Error) << "Can not load geometry without a renderer.";
     return false;
