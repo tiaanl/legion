@@ -5,8 +5,8 @@ namespace le {
 namespace {
 
 void renderNode(ca::Renderer* renderer, const Model& model, const ModelNode& node,
-                const ca::Mat4& transform) {
-  ca::Mat4 t = transform * node.transform;
+                const fl::Mat4& transform) {
+  fl::Mat4 t = transform * node.transform;
 
   for (auto meshIndex : node.meshIndices) {
     const Mesh& mesh = model.meshes[meshIndex];
@@ -34,7 +34,7 @@ void renderNode(ca::Renderer* renderer, const Model& model, const ModelNode& nod
 
 }  // namespace
 
-void renderModel(ca::Renderer* renderer, const Model& model, const ca::Mat4& transform) {
+void renderModel(ca::Renderer* renderer, const Model& model, const fl::Mat4& transform) {
   renderNode(renderer, model, model.rootNode, transform);
 }
 

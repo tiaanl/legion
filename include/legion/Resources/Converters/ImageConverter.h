@@ -2,7 +2,7 @@
 #define LEGION_RESOURCES_CONVERTERS_IMAGE_CONVERTER_H_
 
 #include "hive/Converter.h"
-#include "silhouette/Image/Image.h"
+#include "silhouette/Image.h"
 
 namespace le {
 

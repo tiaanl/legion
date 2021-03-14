@@ -7,9 +7,9 @@ namespace le {
 FirstPersonCameraController::FirstPersonCameraController(Camera* camera, F32 mouseSensitivity)
   : CameraController{camera}, m_mouseSensitivity{mouseSensitivity} {}
 
-void FirstPersonCameraController::onMouseMoved(const ca::Vec2& position) {
+void FirstPersonCameraController::onMouseMoved(const fl::Vec2& position) {
   if (m_mouseIsDown) {
-    ca::Vec2 delta{
+    fl::Vec2 delta{
         static_cast<F32>(position.x - m_lastMousePosition.x),
         static_cast<F32>(position.y - m_lastMousePosition.y),
     };
@@ -17,15 +17,15 @@ void FirstPersonCameraController::onMouseMoved(const ca::Vec2& position) {
     m_yaw += -delta.x * m_mouseSensitivity;
     m_pitch += -delta.y * m_mouseSensitivity;
 
-    m_camera->rotateTo(ca::Quaternion::fromEulerAngles(ca::degrees(m_pitch), ca::degrees(m_yaw),
-                                                       ca::degrees(0.0f)));
+    m_camera->rotateTo(fl::Quaternion::fromEulerAngles(fl::degrees(m_pitch), fl::degrees(m_yaw),
+                                                       fl::degrees(0.0f)));
 
     m_lastMousePosition = position;
   }
 }
 
 void FirstPersonCameraController::onMousePressed(ca::MouseEvent::Button button,
-                                                 const ca::Vec2& position) {
+                                                 const fl::Vec2& position) {
   if (button == ca::MouseEvent::Button::Left) {
     m_mouseIsDown = true;
     m_lastMousePosition = position;
@@ -33,13 +33,13 @@ void FirstPersonCameraController::onMousePressed(ca::MouseEvent::Button button,
 }
 
 void FirstPersonCameraController::onMouseReleased(ca::MouseEvent::Button button,
-                                                  const ca::Vec2& NU_UNUSED(position)) {
+                                                  const fl::Vec2& NU_UNUSED(position)) {
   if (button == ca::MouseEvent::Button::Left) {
     m_mouseIsDown = false;
   }
 }
 
-void FirstPersonCameraController::onMouseWheel(const ca::Vec2& NU_UNUSED(offset)) {}
+void FirstPersonCameraController::onMouseWheel(const fl::Vec2& NU_UNUSED(offset)) {}
 
 void FirstPersonCameraController::onKeyPressed(ca::Key key) {
   switch (key) {

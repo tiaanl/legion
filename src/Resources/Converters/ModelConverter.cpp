@@ -9,15 +9,15 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
   dst->materialIndex = src->materialIndex;
 
   struct V {
-    ca::Vec3 position;
-    ca::Vec2 texCoords;
+    fl::Vec3 position;
+    fl::Vec2 texCoords;
     ca::Color color;
   };
 
   DCHECK(src->positions.size() == src->texCoords.size());
 
   auto buffer = nu::DynamicArray<V>::withInitialSize(
-      src->positions.size(), {ca::Vec3::zero, ca::Vec2::zero, ca::Color::black});
+      src->positions.size(), {fl::Vec3::zero, fl::Vec2::zero, ca::Color::black});
   for (MemSize i = 0; i < src->positions.size(); ++i) {
     buffer.emplaceBack(src->positions[i], src->texCoords[i], ca::Color::red);
   }
@@ -46,7 +46,7 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
     dst->diffuse.color = src->diffuse.color;
 
     if (!src->diffuse.texture.empty()) {
-      dst->diffuse.texture = resourceManager->get<Texture>(src->diffuse.texture);
+      dst->diffuse.texture = resourceManager->get<Texture>(src->diffuse.texture.view());
     }
   }
 
@@ -86,16 +86,15 @@ static void createNode(si::Node* src, ModelNode* dst) {
   for (auto& childNode : src->children) {
     // dst->children.emplace_back(ca::Mat4::identity);
     // createNode(&childNode, &*dst->children.rbegin());
-    auto result = dst->children.emplaceBack(ca::Mat4::identity);
+    auto result = dst->children.emplaceBack(fl::Mat4::identity);
     createNode(&childNode, &result.element());
   }
 }
 
 ModelConverter::ModelConverter() {
-  m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Three,
-                                  "position");
-  m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Two, "texCoords");
-  m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Four, "color");
+  m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Three);
+  m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Two);
+  m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Four);
 }
 
 bool ModelConverter::load(hi::ResourceManager* resourceManager,

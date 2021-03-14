@@ -1,8 +1,8 @@
 #include "legion/World/Camera.h"
 
-#include "canvas/Math/Common.h"
-#include "canvas/Math/Intersection.h"
-#include "canvas/Math/Transform.h"
+#include "floats/Common.h"
+#include "floats/Intersection.h"
+#include "floats/Transform.h"
 #include "nucleus/Macros.h"
 
 namespace le {
@@ -17,21 +17,21 @@ enum class DirtyFlag : U32 {
 }  // namespace
 
 // static
-ca::Vec2 Camera::convertScreenPositionToClipSpace(const ca::Pos& mousePosition,
-                                                  const ca::Size& screenSize) {
+fl::Vec2 Camera::convertScreenPositionToClipSpace(const fl::Pos& mousePosition,
+                                                  const fl::Size& screenSize) {
   F32 x = (2.0f * static_cast<F32>(mousePosition.x) / static_cast<F32>(screenSize.width)) - 1.0f;
   F32 y = 1.0f - (2.0f * static_cast<F32>(mousePosition.y) / static_cast<F32>(screenSize.height));
 
-  return {ca::clamp(x, -1.0f, 1.0f), ca::clamp(y, -1.0f, 1.0f)};
+  return {fl::clamp(x, -1.0f, 1.0f), fl::clamp(y, -1.0f, 1.0f)};
 }
 
 // static
-F32 Camera::aspectRatioFromScreenSize(const ca::Size& size) {
+F32 Camera::aspectRatioFromScreenSize(const fl::Size& size) {
   return (size.height > 0) ? static_cast<F32>(size.width) / static_cast<F32>(size.height) : 1.0f;
 }
 
-Camera::Camera(ca::Angle fieldOfView, const ca::Vec3& worldUp, F32 aspectRatio)
-  : m_worldUp{ca::normalize(worldUp)}, m_fieldOfView{fieldOfView}, m_aspectRatio{aspectRatio} {
+Camera::Camera(fl::Angle fieldOfView, const fl::Vec3& worldUp, F32 aspectRatio)
+  : m_worldUp{fl::normalize(worldUp)}, m_fieldOfView{fieldOfView}, m_aspectRatio{aspectRatio} {
   updateProjectionMatrix();
   updateViewMatrix();
 }
@@ -51,62 +51,62 @@ void Camera::setFarPlane(F32 farPlane) {
   invalidateProjection();
 }
 
-void Camera::setFieldOfView(ca::Angle fieldOfView) {
+void Camera::setFieldOfView(fl::Angle fieldOfView) {
   m_fieldOfView = fieldOfView;
   invalidateProjection();
 }
 
-void Camera::moveTo(const ca::Vec3& position) {
+void Camera::moveTo(const fl::Vec3& position) {
   m_position = position;
 
   invalidateView();
 }
 
-void Camera::moveBy(const ca::Vec3& offset) {
+void Camera::moveBy(const fl::Vec3& offset) {
   moveTo(m_position + offset);
 }
 
-void Camera::rotateTo(const ca::Quaternion& orientation) {
+void Camera::rotateTo(const fl::Quaternion& orientation) {
   m_orientation = orientation;
 
   invalidateView();
 }
 
-void Camera::rotateBy(const ca::Vec3& axis, ca::Angle angle) {
-  rotateBy(ca::fromAxisAngle(axis, angle));
+void Camera::rotateBy(const fl::Vec3& axis, fl::Angle angle) {
+  rotateBy(fl::fromAxisAngle(axis, angle));
 }
 
-void Camera::rotateBy(const ca::Quaternion& orientation) {
+void Camera::rotateBy(const fl::Quaternion& orientation) {
   m_orientation = orientation * m_orientation;
 
   invalidateView();
 }
 
-ca::Ray Camera::createRay() const {
+fl::Ray Camera::createRay() const {
   return {m_position, m_forwardVector};
 }
 
-ca::Ray Camera::createRayForMouse(const ca::Vec2& mousePosition) {
+fl::Ray Camera::createRayForMouse(const fl::Vec2& mousePosition) {
   DCHECK(mousePosition.x >= -1.0f && mousePosition.x <= 1.0f);
   DCHECK(mousePosition.y >= -1.0f && mousePosition.y <= 1.0f);
 
   updateProjectionMatrix();
   updateViewMatrix();
 
-  ca::Mat4 inverse = ca::inverse(m_projectionMatrix * m_viewMatrix);
+  fl::Mat4 inverse = fl::inverse(m_projectionMatrix * m_viewMatrix);
 
-  ca::Vec4 farPoint = inverse * ca::Vec4{mousePosition.x, mousePosition.y, -1.0f, 1.0f};
-  ca::Vec4 midPoint = inverse * ca::Vec4{mousePosition.x, mousePosition.y, 0.0f, 1.0f};
+  fl::Vec4 farPoint = inverse * fl::Vec4{mousePosition.x, mousePosition.y, -1.0f, 1.0f};
+  fl::Vec4 midPoint = inverse * fl::Vec4{mousePosition.x, mousePosition.y, 0.0f, 1.0f};
 
   farPoint /= farPoint.w;
   midPoint /= midPoint.w;
 
-  ca::Vec4 rayDirection = midPoint - farPoint;
+  fl::Vec4 rayDirection = midPoint - farPoint;
 
-  return ca::Ray{farPoint.xyz(), ca::normalize(rayDirection.xyz())};
+  return fl::Ray{farPoint.xyz(), fl::normalize(rayDirection.xyz())};
 }
 
-void Camera::updateProjectionMatrix(ca::Mat4* projectionMatrix) {
+void Camera::updateProjectionMatrix(fl::Mat4* projectionMatrix) {
   if (m_dirtyFlags & static_cast<U32>(DirtyFlag::Projection)) {
     m_dirtyFlags &= ~static_cast<U32>(DirtyFlag::Projection);
     updateProjectionMatrix();
@@ -115,7 +115,7 @@ void Camera::updateProjectionMatrix(ca::Mat4* projectionMatrix) {
   *projectionMatrix = m_projectionMatrix;
 }
 
-void Camera::updateViewMatrix(ca::Mat4* viewMatrix) {
+void Camera::updateViewMatrix(fl::Mat4* viewMatrix) {
   if (m_dirtyFlags & static_cast<U32>(DirtyFlag::View)) {
     m_dirtyFlags &= ~static_cast<U32>(DirtyFlag::View);
     updateViewMatrix();
@@ -134,13 +134,13 @@ void Camera::invalidateView() {
 
 void Camera::updateProjectionMatrix() {
   m_projectionMatrix =
-      ca::perspectiveProjection(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
+      fl::perspectiveProjection(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
 }
 
 void Camera::updateViewMatrix() {
-  m_viewMatrix = ca::createViewMatrix(m_position, m_orientation);
+  m_viewMatrix = fl::createViewMatrix(m_position, m_orientation);
 
-  ca::Mat4 t = ca::transpose(m_viewMatrix);
+  fl::Mat4 t = fl::transpose(m_viewMatrix);
 
   m_rightVector = t.col[0].xyz();
   m_upVector = t.col[1].xyz();

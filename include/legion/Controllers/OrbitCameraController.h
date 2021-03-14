@@ -10,21 +10,21 @@ class OrbitCameraController : public CameraController {
 public:
   NU_DELETE_COPY_AND_MOVE(OrbitCameraController);
 
-  OrbitCameraController(Camera* camera, const ca::Vec3& origin);
+  OrbitCameraController(Camera* camera, const fl::Vec3& origin);
 
   // Override: CameraController
-  void onMouseMoved(const ca::Vec2& position) override;
-  void onMousePressed(ca::MouseEvent::Button button, const ca::Vec2& position) override;
-  void onMouseReleased(ca::MouseEvent::Button button, const ca::Vec2& position) override;
-  void onMouseWheel(const ca::Vec2& offset) override;
+  void onMouseMoved(const fl::Vec2& position) override;
+  void onMousePressed(ca::MouseEvent::Button button, const fl::Vec2& position) override;
+  void onMouseReleased(ca::MouseEvent::Button button, const fl::Vec2& position) override;
+  void onMouseWheel(const fl::Vec2& offset) override;
   void onKeyPressed(ca::Key key) override;
   void onKeyReleased(ca::Key key) override;
   void tick(F32 delta) override;
 
 private:
-  ca::Vec3 m_origin;
-  ca::Angle m_horizontal = ca::Angle::zero;
-  ca::Angle m_vertical = ca::Angle::zero;
+  fl::Vec3 m_origin;
+  fl::Angle m_horizontal = fl::Angle::zero;
+  fl::Angle m_vertical = fl::Angle::zero;
 };
 
 }  // namespace le

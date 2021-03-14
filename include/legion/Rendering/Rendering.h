@@ -6,7 +6,7 @@
 
 namespace le {
 
-void renderModel(ca::Renderer* renderer, const Model& model, const ca::Mat4& transform);
+void renderModel(ca::Renderer* renderer, const Model& model, const fl::Mat4& transform);
 
 }  // namespace le
 

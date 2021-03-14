@@ -2,13 +2,13 @@
 #define LEGION_RESOURCES_TEXTURE_H_
 
 #include "canvas/Renderer/Types.h"
-#include "canvas/Utils/Size.h"
+#include "floats/Size.h"
 
 namespace le {
 
 struct Texture {
   ca::TextureId id;
-  ca::Size size;
+  fl::Size size;
 };
 
 }  // namespace le

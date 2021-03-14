@@ -16,10 +16,10 @@ public:
     return m_camera;
   }
 
-  virtual void onMouseMoved(const ca::Vec2& position) = 0;
-  virtual void onMousePressed(ca::MouseEvent::Button button, const ca::Vec2& position) = 0;
-  virtual void onMouseReleased(ca::MouseEvent::Button button, const ca::Vec2& position) = 0;
-  virtual void onMouseWheel(const ca::Vec2& offset) = 0;
+  virtual void onMouseMoved(const fl::Vec2& position) = 0;
+  virtual void onMousePressed(ca::MouseEvent::Button button, const fl::Vec2& position) = 0;
+  virtual void onMouseReleased(ca::MouseEvent::Button button, const fl::Vec2& position) = 0;
+  virtual void onMouseWheel(const fl::Vec2& offset) = 0;
   virtual void onKeyPressed(ca::Key key) = 0;
   virtual void onKeyReleased(ca::Key key) = 0;
   virtual void tick(F32 delta) = 0;
