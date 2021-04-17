@@ -14,7 +14,7 @@ public:
   ~TextureConverter() override = default;
 
   // Override: hi::Converter
-  bool load(hi::ResourceManager* resourceManager, const nu::StringView& name,
+  bool load(hi::ResourceManager* resourceManager, nu::StringView name,
             nu::InputStream* inputStream, Texture* storage) override;
 };
 

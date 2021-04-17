@@ -2,11 +2,11 @@
 
 #include "canvas/Renderer/Renderer.h"
 #include "hive/ResourceManager.h"
-#include "silhouette/Image.h"
+#include "silhouette/image.h"
 
 namespace le {
 
-bool TextureConverter::load(hi::ResourceManager* resourceManager, const nu::StringView& name,
+bool TextureConverter::load(hi::ResourceManager* resourceManager, nu::StringView name,
                             nu::InputStream* NU_UNUSED(inputStream), Texture* storage) {
   auto* image = resourceManager->get<si::Image>(name);
 

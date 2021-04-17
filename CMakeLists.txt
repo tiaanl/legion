@@ -11,9 +11,9 @@ file(GLOB_RECURSE legion_SOURCE_FILES src/**/*.cpp)
 nucleus_add_library(legion ${legion_HEADER_FILES} ${legion_SOURCE_FILES})
 target_link_libraries(legion canvas hive silhouette)
 
-set(legion_TEST_FILES
-    tests/Resources/TextureConverterTests.cpp
-    )
+file(GLOB_RECURSE legion_TEST_FILES tests/**/*tests.cpp)
 
 nucleus_add_executable(legionTests ${legion_TEST_FILES})
 target_link_libraries(legionTests PRIVATE legion testsMain)
+
+add_subdirectory(examples)

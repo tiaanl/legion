@@ -4,8 +4,7 @@
 #include "canvas/Renderer/Renderer.h"
 #include "legion/Resources/Converters/RendererConverter.h"
 #include "legion/Resources/Model.h"
-#include "silhouette/Import/Import.h"
-#include "silhouette/Scene/Scene.h"
+#include "silhouette/scene.h"
 
 namespace le {
 
@@ -14,8 +13,8 @@ public:
   ModelConverter();
 
 private:
-  bool load(hi::ResourceManager* resourceManager, const nu::StringView& name,
-            nu::InputStream* inputStream, Model* model) override;
+  bool load(hi::ResourceManager* resourceManager, nu::StringView name, nu::InputStream* inputStream,
+            Model* model) override;
 
   ca::VertexDefinition m_vertexDefinition;
 };

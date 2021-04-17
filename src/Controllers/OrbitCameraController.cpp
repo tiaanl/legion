@@ -20,7 +20,7 @@ void OrbitCameraController::onKeyPressed(ca::Key NU_UNUSED(key)) {}
 void OrbitCameraController::onKeyReleased(ca::Key NU_UNUSED(key)) {}
 
 void OrbitCameraController::tick(F32 NU_UNUSED(delta)) {
-  LOG(Info) << "moving camera";
+  // LOG(Info) << "moving camera";
   m_camera->moveTo(fl::Vec3{0.0f, 0.0f, 100.0f});
 }
 

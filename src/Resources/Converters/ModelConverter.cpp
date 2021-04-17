@@ -5,8 +5,8 @@
 namespace le {
 
 static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& vertexDefinition,
-                       si::Mesh* src, Mesh* dst) {
-  dst->materialIndex = src->materialIndex;
+                       const si::Mesh& src, Mesh* dst) {
+  dst->materialIndex = src.materialIndex;
 
   struct V {
     fl::Vec3 position;
@@ -14,12 +14,12 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
     ca::Color color;
   };
 
-  DCHECK(src->positions.size() == src->texCoords.size());
+  DCHECK(src.positions.size() == src.texCoords.size());
 
   auto buffer = nu::DynamicArray<V>::withInitialSize(
-      src->positions.size(), {fl::Vec3::zero, fl::Vec2::zero, ca::Color::black});
-  for (MemSize i = 0; i < src->positions.size(); ++i) {
-    buffer.emplaceBack(src->positions[i], src->texCoords[i], ca::Color::red);
+      src.positions.size(), {fl::Vec3::zero, fl::Vec2::zero, ca::Color::black});
+  for (MemSize i = 0; i < src.positions.size(); ++i) {
+    buffer.emplaceBack(src.positions[i], src.texCoords[i], ca::Color::red);
   }
 
 #if 0
@@ -39,14 +39,19 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
   dst->drawType = ca::DrawType::Triangles;
 }
 
-void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager, si::Material* src,
+void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager, const si::Material& src,
                     Material* dst) {
   {
     // Diffuse
-    dst->diffuse.color = src->diffuse.color;
+    dst->diffuse.color = ca::Color{
+        static_cast<F32>(src.diffuse.color.red) / 255.0f,
+        static_cast<F32>(src.diffuse.color.green) / 255.0f,
+        static_cast<F32>(src.diffuse.color.blue) / 255.0f,
+        static_cast<F32>(src.diffuse.color.alpha) / 255.0f,
+    };
 
-    if (!src->diffuse.texture.empty()) {
-      dst->diffuse.texture = resourceManager->get<Texture>(src->diffuse.texture.view());
+    if (!src.diffuse.texture.empty()) {
+      dst->diffuse.texture = resourceManager->get<Texture>(src.diffuse.texture.view());
     }
   }
 
@@ -77,17 +82,17 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
   }
 }
 
-static void createNode(si::Node* src, ModelNode* dst) {
-  dst->transform = src->transform;
-  for (auto& meshIndex : src->meshIndices) {
+static void createNode(const si::Node& src, ModelNode* dst) {
+  dst->transform = src.transform;
+  for (auto& meshIndex : src.meshIndices) {
     dst->meshIndices.emplaceBack(meshIndex);
   }
 
-  for (auto& childNode : src->children) {
+  for (const auto& childNode : src.children) {
     // dst->children.emplace_back(ca::Mat4::identity);
     // createNode(&childNode, &*dst->children.rbegin());
     auto result = dst->children.emplaceBack(fl::Mat4::identity);
-    createNode(&childNode, &result.element());
+    createNode(childNode, &result.element());
   }
 }
 
@@ -97,39 +102,38 @@ ModelConverter::ModelConverter() {
   m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Four);
 }
 
-bool ModelConverter::load(hi::ResourceManager* resourceManager,
-                          const nu::StringView& NU_UNUSED(name), nu::InputStream* inputStream,
-                          Model* model) {
+bool ModelConverter::load(hi::ResourceManager* resourceManager, nu::StringView NU_UNUSED(name),
+                          nu::InputStream* inputStream, Model* model) {
   if (!m_renderer) {
     LOG(Error) << "Can not load geometry without a renderer.";
     return false;
   }
 
   si::Scene scene;
-  if (!si::loadCollada(&scene, inputStream)) {
+  if (!scene.load_from_collada(inputStream)) {
     LOG(Error) << "Could not load geometry ()";
     return false;
   }
 
-  if (scene.meshes.isEmpty()) {
+  if (scene.meshes().isEmpty()) {
     LOG(Warning) << "Model contains no geometry.";
     return false;
   }
 
   // Add all the meshes.
-  for (auto& sceneMesh : scene.meshes) {
+  for (const auto& sceneMesh : scene.meshes()) {
     auto result = model->meshes.emplaceBack();
-    createMesh(m_renderer, m_vertexDefinition, &sceneMesh, &result.element());
+    createMesh(m_renderer, m_vertexDefinition, sceneMesh, &result.element());
   }
 
   // Add all materials.
-  for (auto& sceneMaterial : scene.materials) {
+  for (const auto& sceneMaterial : scene.materials()) {
     auto result = model->materials.emplaceBack();
-    createMaterial(m_renderer, resourceManager, &sceneMaterial, &result.element());
+    createMaterial(m_renderer, resourceManager, sceneMaterial, &result.element());
   }
 
   // Add nodes.
-  createNode(&scene.rootNode, &model->rootNode);
+  createNode(scene.root_node(), &model->rootNode);
 
   return true;
 }
