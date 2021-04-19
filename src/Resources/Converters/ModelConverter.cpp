@@ -16,8 +16,7 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
 
   DCHECK(src.positions.size() == src.texCoords.size());
 
-  auto buffer = nu::DynamicArray<V>::withInitialSize(
-      src.positions.size(), {fl::Vec3::zero, fl::Vec2::zero, ca::Color::black});
+  auto buffer = nu::DynamicArray<V>::withInitialCapacity(src.positions.size());
   for (MemSize i = 0; i < src.positions.size(); ++i) {
     buffer.emplaceBack(src.positions[i], src.texCoords[i], ca::Color::red);
   }
@@ -39,8 +38,8 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
   dst->drawType = ca::DrawType::Triangles;
 }
 
-void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager, const si::Material& src,
-                    Material* dst) {
+void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager,
+                    const si::Material& src, Material* dst) {
   {
     // Diffuse
     dst->diffuse.color = ca::Color{
