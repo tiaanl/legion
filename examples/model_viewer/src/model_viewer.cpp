@@ -1,7 +1,7 @@
 #include <canvas/App.h>
 #include <floats/Transform.h>
 #include <hive/PhysicalResourceLocator.h>
-#include <legion/Controllers/FirstPersonCameraController.h>
+#include <legion/Controllers/OrbitCameraController.h>
 #include <legion/Rendering/Rendering.h>
 #include <legion/Resources/Model.h>
 #include <legion/Resources/ResourceManager.h>
@@ -23,11 +23,16 @@ public:
 
     resource_manager_.setRenderer(renderer);
 
-    // fixtures_locator_.setRootPath(nu::FilePath{"/home/tilo/code/game/silhouette/tests/fixtures"});
+#if OS(WIN)
     fixtures_locator_.setRootPath(nu::FilePath{R"(C:\Code\silhouette\tests\fixtures)"});
-    resource_manager_.addResourceLocatorBack(&fixtures_locator_);
-    // asteroids_locator_.setRootPath(nu::FilePath{"/home/tilo/code/game/AsteroidDefender/assets"});
     asteroids_locator_.setRootPath(nu::FilePath{R"(C:\Code\AsteroidDefender\assets)"});
+#elif OS(POSIX)
+    fixtures_locator_.setRootPath(nu::FilePath{"/home/tilo/code/game/silhouette/tests/fixtures"});
+    asteroids_locator_.setRootPath(nu::FilePath{"/home/tilo/code/game/AsteroidDefender/assets"});
+#else
+#error Unsupported operating system.
+#endif
+    resource_manager_.addResourceLocatorBack(&fixtures_locator_);
     resource_manager_.addResourceLocatorBack(&asteroids_locator_);
 
     model_ = resource_manager_.get<le::Model>("box.dae");
@@ -40,13 +45,9 @@ public:
   }
 
   bool onMousePressed(const ca::MouseEvent& evt) override {
-    if (WindowDelegate::onMousePressed(evt)) {
-      return true;
-    }
-
     camera_controller_.onMousePressed(evt.button, f(evt.pos));
 
-    return true;
+    return WindowDelegate::onMousePressed(evt);
   }
 
   void onMouseMoved(const ca::MouseEvent& evt) override {
@@ -68,7 +69,7 @@ public:
   }
 
   void onRender(ca::Renderer* renderer) override {
-    main_camera_.moveTo({0.0f, 0.0f, 0.0f});
+    // main_camera_.moveTo({0.0f, 0.0f, 10.0f});
 
     fl::Mat4 projection = fl::Mat4::identity;
     fl::Mat4 view = fl::Mat4::identity;
@@ -76,7 +77,7 @@ public:
     main_camera_.updateProjectionMatrix(&projection);
     main_camera_.updateViewMatrix(&view);
 
-    auto mvp = fl::inverse(projection * view);
+    auto mvp = projection * view;
 
 #if 0
     LOG(Info) << "-------------";
@@ -95,7 +96,7 @@ private:
   le::ResourceManager resource_manager_;
 
   le::Camera main_camera_;
-  le::FirstPersonCameraController camera_controller_{&main_camera_};
+  le::OrbitCameraController camera_controller_{&main_camera_, fl::Vec3::zero};
 
   le::Model* model_ = nullptr;
 };

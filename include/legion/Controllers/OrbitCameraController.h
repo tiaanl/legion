@@ -22,9 +22,12 @@ public:
   void tick(F32 delta) override;
 
 private:
-  fl::Vec3 m_origin;
-  fl::Angle m_horizontal = fl::Angle::zero;
-  fl::Angle m_vertical = fl::Angle::zero;
+  fl::Vec3 origin_;
+  fl::Angle horizontal_ = fl::Angle::zero;
+  fl::Angle vertical_ = fl::Angle::zero;
+
+  bool is_moving_camera_ = false;
+  fl::Vec2 drag_start_ = fl::Vec2::zero;
 };
 
 }  // namespace le
