@@ -1,4 +1,5 @@
 #include <canvas/App.h>
+#include <canvas/Renderer/ImmediateRenderer.h>
 #include <floats/Transform.h>
 #include <hive/PhysicalResourceLocator.h>
 #include <legion/Controllers/OrbitCameraController.h>

@@ -95,6 +95,9 @@ public:
     return m_upVector;
   }
 
+  // Orient the camera to look at the target position.
+  void look_at(const fl::Vec3& target);
+
   // Create a ray that starts from the camera's current position and points towards the camera
   // forward direction.
   fl::Ray createRay() const;
