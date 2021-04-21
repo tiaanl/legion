@@ -17,8 +17,9 @@ void TopDownCameraController::tick(F32 delta) {
   m_camera->moveBy(m_movement.direction * delta);
 }
 
-void TopDownCameraController::onMouseMoved(const fl::Vec2& position) {
+void TopDownCameraController::on_mouse_moved(const ca::MouseEvent& evt) {
   if (m_movement.isMoving) {
+    const fl::Vec2 position{static_cast<F32>(evt.pos.x), static_cast<F32>(evt.pos.y)};
     fl::Vec3 newPositionInWorld = getMousePositionInWorld(position);
     fl::Vec3 worldDelta = m_movement.lastMousePositionInWorld - newPositionInWorld;
 
@@ -26,28 +27,27 @@ void TopDownCameraController::onMouseMoved(const fl::Vec2& position) {
   }
 }
 
-void TopDownCameraController::onMousePressed(ca::MouseEvent::Button button,
-                                             const fl::Vec2& position) {
-  if (button == ca::MouseEvent::Button::Right) {
+void TopDownCameraController::on_mouse_pressed(const ca::MouseEvent& evt) {
+  if (evt.button == ca::MouseEvent::Button::Right) {
+    const fl::Vec2 position{static_cast<F32>(evt.pos.x), static_cast<F32>(evt.pos.y)};
     m_movement.isMoving = true;
     m_movement.lastMousePositionInWorld = getMousePositionInWorld(position);
   }
 }
 
-void TopDownCameraController::onMouseReleased(ca::MouseEvent::Button button,
-                                              const fl::Vec2& NU_UNUSED(position)) {
-  if (button == ca::MouseEvent::Button::Right) {
+void TopDownCameraController::on_mouse_released(const ca::MouseEvent& evt) {
+  if (evt.button == ca::MouseEvent::Button::Right) {
     m_movement.isMoving = false;
   }
 }
 
-void TopDownCameraController::onMouseWheel(const fl::Vec2& offset) {
+void TopDownCameraController::on_mouse_wheel(const ca::MouseWheelEvent& evt) {
   // m_camera->setFieldOfView(m_camera->fieldOfView() + ca::degrees(-offset.y));
-  m_height += -offset.y;
+  m_height += -static_cast<F32>(evt.wheelOffset.y);
 }
 
-void TopDownCameraController::onKeyPressed(ca::Key key) {
-  switch (key) {
+void TopDownCameraController::on_key_pressed(const ca::KeyEvent& evt) {
+  switch (evt.key) {
     case ca::Key::A:
       m_movement.direction -= fl::Vec3::right * kKeyboardSensitivity;
       break;
@@ -69,8 +69,8 @@ void TopDownCameraController::onKeyPressed(ca::Key key) {
   }
 }
 
-void TopDownCameraController::onKeyReleased(ca::Key key) {
-  switch (key) {
+void TopDownCameraController::on_key_released(const ca::KeyEvent& evt){
+  switch (evt.key) {
     case ca::A:
       m_movement.direction += fl::Vec3::right * kKeyboardSensitivity;
       break;

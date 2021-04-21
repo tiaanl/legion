@@ -2,7 +2,9 @@
 #include <canvas/Renderer/ImmediateRenderer.h>
 #include <floats/Transform.h>
 #include <hive/PhysicalResourceLocator.h>
+#include <legion/Controllers/FirstPersonCameraController.h>
 #include <legion/Controllers/OrbitCameraController.h>
+#include <legion/Controllers/TopDownCameraController.h>
 #include <legion/Rendering/Rendering.h>
 #include <legion/Resources/Model.h>
 #include <legion/Resources/ResourceManager.h>
@@ -21,6 +23,8 @@ public:
     }
 
     auto* renderer = window->getRenderer();
+
+    immediate_renderer_ = nu::makeScopedPtr<ca::ImmediateRenderer>(renderer);
 
     resource_manager_.setRenderer(renderer);
 
@@ -42,25 +46,16 @@ public:
       return false;
     }
 
+    add_mouse_event_handler(&camera_controller_);
+    add_keyboard_event_handler(&camera_controller_);
+
     return true;
   }
 
-  bool onMousePressed(const ca::MouseEvent& evt) override {
-    camera_controller_.onMousePressed(evt.button, f(evt.pos));
+  void onWindowResized(const fl::Size& size) override {
+    WindowDelegate::onWindowResized(size);
 
-    return WindowDelegate::onMousePressed(evt);
-  }
-
-  void onMouseMoved(const ca::MouseEvent& evt) override {
-    WindowDelegate::onMouseMoved(evt);
-
-    camera_controller_.onMouseMoved(f(evt.pos));
-  }
-
-  void onMouseReleased(const ca::MouseEvent& evt) override {
-    WindowDelegate::onMouseReleased(evt);
-
-    camera_controller_.onMouseReleased(evt.button, f(evt.pos));
+    main_camera_.setAspectRatio(fl::aspect_ratio(size));
   }
 
   void tick(F32 delta) override {
@@ -70,14 +65,12 @@ public:
   }
 
   void onRender(ca::Renderer* renderer) override {
-    // main_camera_.moveTo({0.0f, 0.0f, 10.0f});
+    // main_camera_.moveTo({0.0f, 2.0f, 10.0f});
 
     fl::Mat4 projection = fl::Mat4::identity;
     fl::Mat4 view = fl::Mat4::identity;
-
     main_camera_.updateProjectionMatrix(&projection);
     main_camera_.updateViewMatrix(&view);
-
     auto mvp = projection * view;
 
 #if 0
@@ -89,17 +82,40 @@ public:
 #endif  // 0
 
     le::renderModel(renderer, *model_, mvp);
+
+    render_grid(mvp, 1.0f);
+
+    immediate_renderer_->submit_to_renderer();
   }
 
 private:
+  void render_grid(const fl::Mat4& transform, F32 size = 1.0f) {
+    auto& mesh = immediate_renderer_->create_mesh(ca::DrawType::Lines, transform)
+                     .vertex(fl::Vec3::zero)
+                     .vertex({100.0f, 100.0f, 100.0f});
+
+    F32 total_size = 10.0f * size;
+
+    for (I32 x = -10; x <= 10; ++x) {
+      mesh.vertex({static_cast<F32>(x) * size, 0.0f, -total_size})
+          .vertex({static_cast<F32>(x) * size, 0.0f, total_size})
+          .vertex({-total_size, 0.0f, static_cast<F32>(x) * size})
+          .vertex({total_size, 0.0f, static_cast<F32>(x) * size});
+    }
+  }
+
   hi::PhysicalFileResourceLocator fixtures_locator_;
   hi::PhysicalFileResourceLocator asteroids_locator_;
   le::ResourceManager resource_manager_;
 
   le::Camera main_camera_;
-  le::OrbitCameraController camera_controller_{&main_camera_, fl::Vec3::zero};
+  // le::OrbitCameraController camera_controller_{&main_camera_, fl::Vec3::zero};
+  le::FirstPersonCameraController camera_controller_{&main_camera_, 0.1f, 0.08f};
+  // le::TopDownCameraController camera_controller_{&main_camera_, {fl::Vec3::up, 0.0f}, 20.0f};
 
   le::Model* model_ = nullptr;
+
+  nu::ScopedPtr<ca::ImmediateRenderer> immediate_renderer_;
 };
 
 CANVAS_APP(ModelViewerDelegate)

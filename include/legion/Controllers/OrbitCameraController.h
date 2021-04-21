@@ -2,23 +2,21 @@
 #define AD_WORLD_ORBIT_CAMERA_CONTROLLER_H_
 
 #include "canvas/Windows/Event.h"
-#include "legion/Controllers/CameraController.h"
+#include "legion/Controllers/camera_controller.h"
 
 namespace le {
 
-class OrbitCameraController : public CameraController {
+class OrbitCameraController : public CameraController, public ca::MouseEventHandlerInterface {
 public:
   NU_DELETE_COPY_AND_MOVE(OrbitCameraController);
 
   OrbitCameraController(Camera* camera, const fl::Vec3& origin);
 
   // Override: CameraController
-  void onMouseMoved(const fl::Vec2& position) override;
-  void onMousePressed(ca::MouseEvent::Button button, const fl::Vec2& position) override;
-  void onMouseReleased(ca::MouseEvent::Button button, const fl::Vec2& position) override;
-  void onMouseWheel(const fl::Vec2& offset) override;
-  void onKeyPressed(ca::Key key) override;
-  void onKeyReleased(ca::Key key) override;
+  void on_mouse_moved(const ca::MouseEvent& event) override;
+  void on_mouse_pressed(const ca::MouseEvent& event) override;
+  void on_mouse_released(const ca::MouseEvent& event) override;
+  void on_mouse_wheel(const ca::MouseWheelEvent& event) override;
   void tick(F32 delta) override;
 
 private:
