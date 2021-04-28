@@ -14,7 +14,7 @@ public:
 
   // Override: CameraController
   void on_mouse_moved(const ca::MouseEvent& event) override;
-  void on_mouse_pressed(const ca::MouseEvent& event) override;
+  bool on_mouse_pressed(const ca::MouseEvent& event) override;
   void on_mouse_released(const ca::MouseEvent& event) override;
   void on_mouse_wheel(const ca::MouseWheelEvent& event) override;
   void tick(F32 delta) override;

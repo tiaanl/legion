@@ -27,12 +27,15 @@ void TopDownCameraController::on_mouse_moved(const ca::MouseEvent& evt) {
   }
 }
 
-void TopDownCameraController::on_mouse_pressed(const ca::MouseEvent& evt) {
+bool TopDownCameraController::on_mouse_pressed(const ca::MouseEvent& evt) {
   if (evt.button == ca::MouseEvent::Button::Right) {
     const fl::Vec2 position{static_cast<F32>(evt.pos.x), static_cast<F32>(evt.pos.y)};
     m_movement.isMoving = true;
     m_movement.lastMousePositionInWorld = getMousePositionInWorld(position);
+    return true;
   }
+
+  return false;
 }
 
 void TopDownCameraController::on_mouse_released(const ca::MouseEvent& evt) {

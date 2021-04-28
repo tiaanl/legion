@@ -17,7 +17,7 @@ public:
 
   // Override: ca::MouseEventHandlerInterface
   void on_mouse_moved(const ca::MouseEvent& evt) override;
-  void on_mouse_pressed(const ca::MouseEvent& evt) override;
+  bool on_mouse_pressed(const ca::MouseEvent& evt) override;
   void on_mouse_released(const ca::MouseEvent& evt) override;
   void on_mouse_wheel(const ca::MouseWheelEvent& evt) override;
 

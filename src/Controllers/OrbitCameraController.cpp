@@ -20,13 +20,16 @@ void OrbitCameraController::on_mouse_moved(const ca::MouseEvent& event) {
   }
 }
 
-void OrbitCameraController::on_mouse_pressed(const ca::MouseEvent& event) {
+bool OrbitCameraController::on_mouse_pressed(const ca::MouseEvent& event) {
   if (event.button == ca::MouseEvent::Button::Left) {
     const auto position = fl::Vec2{static_cast<F32>(event.pos.x), static_cast<F32>(event.pos.y)};
 
     is_moving_camera_ = true;
     drag_start_ = position;
+    return true;
   }
+
+  return false;
 }
 
 void OrbitCameraController::on_mouse_released(const ca::MouseEvent& event) {
