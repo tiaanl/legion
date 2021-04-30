@@ -41,7 +41,11 @@ bool FirstPersonCameraController::on_mouse_pressed(const ca::MouseEvent& evt) {
   if (evt.button == ca::MouseEvent::Button::Left) {
     m_mouseIsDown = true;
     m_lastMousePosition = {static_cast<F32>(evt.pos.x), static_cast<F32>(evt.pos.y)};
+
+    return true;
   }
+
+  return false;
 }
 
 void FirstPersonCameraController::on_mouse_released(const ca::MouseEvent& evt) {
