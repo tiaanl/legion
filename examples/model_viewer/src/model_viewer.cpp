@@ -37,8 +37,9 @@ public:
 #else
 #error Unsupported operating system.
 #endif
-    resource_manager_.addResourceLocatorBack(&fixtures_locator_);
-    resource_manager_.addResourceLocatorBack(&asteroids_locator_);
+
+    resource_manager_.add_resource_locator(&fixtures_locator_);
+    resource_manager_.add_resource_locator(&asteroids_locator_);
 
     model_ = resource_manager_.get<le::Model>("box.dae");
     if (!model_) {
@@ -65,6 +66,8 @@ public:
   }
 
   void onRender(ca::Renderer* renderer) override {
+    renderer->state().depth_test(true);
+
     // main_camera_.moveTo({0.0f, 2.0f, 10.0f});
 
     fl::Mat4 projection = fl::Mat4::identity;

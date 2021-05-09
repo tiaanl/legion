@@ -42,7 +42,7 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
                     const si::Material& src, Material* dst) {
   {
     // Diffuse
-    dst->diffuse.color = ca::Color{
+    dst->color = ca::Color{
         static_cast<F32>(src.diffuse.color.red) / 255.0f,
         static_cast<F32>(src.diffuse.color.green) / 255.0f,
         static_cast<F32>(src.diffuse.color.blue) / 255.0f,
@@ -50,12 +50,12 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
     };
 
     if (!src.diffuse.texture.empty()) {
-      dst->diffuse.texture = resourceManager->get<Texture>(src.diffuse.texture.view());
+      dst->texture = resourceManager->get<Texture>(src.diffuse.texture.view());
     }
   }
 
   dst->type = MaterialType::DiffuseColor;
-  if (dst->diffuse.texture) {
+  if (dst->texture) {
     dst->type = MaterialType::Textured;
 
     auto vertexShader = resourceManager->get<ca::ShaderSource>("diffuse_texture.vs");
@@ -66,7 +66,7 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
     } else {
       dst->programId = renderer->createProgram(*vertexShader, *fragmentShader);
       dst->transformUniformId = renderer->createUniform("uTransform");
-      dst->diffuse.textureUniformId = renderer->createUniform("uTexture");
+      dst->textureUniformId = renderer->createUniform("uTexture");
     }
   } else {
     auto vertexShader = resourceManager->get<ca::ShaderSource>("diffuse_lopoly.vs");
@@ -82,15 +82,15 @@ void createMaterial(ca::Renderer* renderer, hi::ResourceManager* resourceManager
 }
 
 static void createNode(const si::Node& src, ModelNode* dst) {
-  dst->transform = src.transform;
+  dst->set_transform(src.transform);
   for (auto& meshIndex : src.meshIndices) {
-    dst->meshIndices.emplaceBack(meshIndex);
+    dst->mesh_indices().emplaceBack(meshIndex);
   }
 
   for (const auto& childNode : src.children) {
     // dst->children.emplace_back(ca::Mat4::identity);
     // createNode(&childNode, &*dst->children.rbegin());
-    auto result = dst->children.emplaceBack(fl::Mat4::identity);
+    auto result = dst->children().emplaceBack(fl::Mat4::identity);
     createNode(childNode, &result.element());
   }
 }
@@ -121,18 +121,18 @@ bool ModelConverter::load(hi::ResourceManager* resourceManager, nu::StringView N
 
   // Add all the meshes.
   for (const auto& sceneMesh : scene.meshes()) {
-    auto result = model->meshes.emplaceBack();
+    auto result = model->meshes().emplaceBack();
     createMesh(m_renderer, m_vertexDefinition, sceneMesh, &result.element());
   }
 
   // Add all materials.
   for (const auto& sceneMaterial : scene.materials()) {
-    auto result = model->materials.emplaceBack();
+    auto result = model->materials().emplaceBack();
     createMaterial(m_renderer, resourceManager, sceneMaterial, &result.element());
   }
 
   // Add nodes.
-  createNode(scene.root_node(), &model->rootNode);
+  createNode(scene.root_node(), &model->root_node());
 
   return true;
 }
