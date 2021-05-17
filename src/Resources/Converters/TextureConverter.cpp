@@ -1,10 +1,11 @@
 #include "legion/Resources/Converters/TextureConverter.h"
 
 #include "canvas/Renderer/Renderer.h"
-#include "hive/ResourceManager.h"
 #include "silhouette/image.h"
 
 namespace le {
+
+#if 0
 
 bool TextureConverter::load(hi::ResourceManager* resourceManager, nu::StringView name,
                             nu::InputStream* NU_UNUSED(inputStream), Texture* storage) {
@@ -29,7 +30,7 @@ bool TextureConverter::load(hi::ResourceManager* resourceManager, nu::StringView
       break;
   }
 
-  auto textureId = m_renderer->createTexture(textureFormat, image->size(), image->data().data(),
+  auto textureId = renderer_->createTexture(textureFormat, image->size(), image->data().data(),
                                              image->data().size(), false);
   if (!textureId.isValid()) {
     return false;
@@ -42,5 +43,7 @@ bool TextureConverter::load(hi::ResourceManager* resourceManager, nu::StringView
 
   return true;
 }
+
+#endif  // 0
 
 }  // namespace le

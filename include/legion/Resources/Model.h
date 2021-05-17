@@ -1,12 +1,20 @@
 #pragma once
 
+#include <silhouette/scene.h>
+
 #include "canvas/Renderer/Types.h"
 #include "canvas/Utils/Color.h"
 #include "floats/Mat4.h"
 #include "legion/Resources/Texture.h"
 #include "nucleus/Containers/DynamicArray.h"
 
+namespace ca {
+class Renderer;
+}  // namespace ca
+
 namespace le {
+
+class ResourceManager;
 
 enum class MaterialType : U32 {
   DiffuseColor,
@@ -24,7 +32,7 @@ struct Material {
   ca::UniformId transformUniformId;
 
   ca::Color color = ca::Color::red;
-  Texture* texture;
+  Texture texture;
   ca::UniformId textureUniformId;
 
 private:
@@ -95,10 +103,11 @@ class Model {
   NU_DELETE_COPY(Model);
 
 public:
+  static Model create_from_scene(si::Scene& scene, ResourceManager* resource_manager,
+                                 ca::Renderer* renderer);
+
   Model() = default;
-  ~Model() {
-    LOG(Info) << "~Model";
-  }
+  ~Model() = default;
 
   Model(nu::DynamicArray<Mesh> meshes, nu::DynamicArray<Material> materials, ModelNode root_node)
     : meshes_{std::move(meshes)},

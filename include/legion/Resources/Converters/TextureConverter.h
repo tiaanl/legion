@@ -1,23 +1,24 @@
-#ifndef LEGION_RESOURCES_CONVERTERS_TEXTURE_CONVERTER_H_
-#define LEGION_RESOURCES_CONVERTERS_TEXTURE_CONVERTER_H_
+#pragma once
 
-#include "legion/Resources/Converters/RendererConverter.h"
+#include "legion/Resources/Converters/RendererImporter.h"
 #include "legion/Resources/Texture.h"
 
 namespace le {
 
-class TextureConverter : public RendererConverter<Texture> {
-public:
+#if 0
+
+class TextureConverter : public RendererImporter<Texture> {
   NU_DELETE_COPY_AND_MOVE(TextureConverter);
 
+public:
   explicit TextureConverter() = default;
   ~TextureConverter() override = default;
 
   // Override: hi::Converter
-  bool load(hi::ResourceManager* resourceManager, nu::StringView name,
-            nu::InputStream* inputStream, Texture* storage) override;
+  bool load(hi::ResourceManager* resourceManager, nu::StringView name, nu::InputStream* inputStream,
+            Texture* storage) override;
 };
 
-}  // namespace le
+#endif  // 0
 
-#endif  // LEGION_RESOURCES_CONVERTERS_TEXTURE_CONVERTER_H_
+}  // namespace le

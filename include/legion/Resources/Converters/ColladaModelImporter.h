@@ -2,20 +2,22 @@
 #define LEGION_RESOURCES_CONVERTERS_MODEL_CONVERTER_H_
 
 #include "canvas/Renderer/Renderer.h"
-#include "legion/Resources/Converters/RendererConverter.h"
+#include "legion/Resources/Converters/RendererImporter.h"
 #include "legion/Resources/Model.h"
 #include "silhouette/scene.h"
 
 namespace le {
 
-class ModelConverter : public RendererConverter<Model> {
+class ResourceManager;
+
+class ColladaModelImporter : public hi::Importer<si::Scene> {
 public:
-  ModelConverter();
+  explicit ColladaModelImporter(ResourceManager* resource_manager);
+
+  bool import(nu::StringView name, nu::InputStream* stream, si::Scene* storage) override;
 
 private:
-  bool load(hi::ResourceManager* resourceManager, nu::StringView name, nu::InputStream* inputStream,
-            Model* model) override;
-
+  ResourceManager* resource_manager_;
   ca::VertexDefinition m_vertexDefinition;
 };
 

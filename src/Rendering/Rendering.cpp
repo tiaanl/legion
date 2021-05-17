@@ -20,7 +20,7 @@ void renderNode(ca::Renderer* renderer, const Model& model, const ModelNode& nod
 
     if (material.type == MaterialType::Textured) {
       renderer->draw(mesh.drawType, 0, mesh.vertexCount, material.programId, mesh.vertexBufferId,
-                     material.texture->id, uniforms);
+                     material.texture.id, uniforms);
     } else {
       renderer->draw(mesh.drawType, 0, mesh.vertexCount, material.programId, mesh.vertexBufferId,
                      {}, uniforms);
