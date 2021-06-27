@@ -1,14 +1,14 @@
-#include <canvas/App.h>
-#include <canvas/Renderer/ImmediateRenderer.h>
-#include <floats/Transform.h>
-#include <hive/PhysicalResourceLocator.h>
-#include <legion/Controllers/FirstPersonCameraController.h>
-#include <legion/Controllers/OrbitCameraController.h>
-#include <legion/Controllers/TopDownCameraController.h>
-#include <legion/Rendering/Rendering.h>
-#include <legion/Resources/Model.h>
-#include <legion/Resources/ResourceManager.h>
+#include <canvas/Renderer/immediate_renderer.h>
+#include <canvas/app.h>
+#include <floats/transform.h>
+#include <hive/physical_file_locator.h>
+#include <legion/Rendering/rendering.h>
+#include <legion/Resources/resource_manager.h>
+#include <nucleus/optional.h>
 
+#include <legion/engine/engine.hpp>
+
+#if 0
 inline fl::Vec2 f(const fl::Pos& p) {
   return {fl::Vec2{static_cast<F32>(p.x), static_cast<F32>(p.y)}};
 }
@@ -21,6 +21,8 @@ public:
     if (!WindowDelegate::onWindowCreated(window)) {
       return false;
     }
+
+#if 0
 
     auto* renderer = window->getRenderer();
 
@@ -50,22 +52,29 @@ public:
     add_mouse_event_handler(&camera_controller_);
     add_keyboard_event_handler(&camera_controller_);
 
+#endif  // 0
+
     return true;
   }
 
   void onWindowResized(const fl::Size& size) override {
     WindowDelegate::onWindowResized(size);
 
+#if 0
     main_camera_.setAspectRatio(fl::aspect_ratio(size));
+#endif  // 0
   }
 
   void tick(F32 delta) override {
     WindowDelegate::tick(delta);
 
+#if 0
     camera_controller_.tick(delta);
+#endif  // 0
   }
 
   void onRender(ca::Renderer* renderer) override {
+#if 0
     renderer->state().depth_test(true);
 
     // main_camera_.moveTo({0.0f, 2.0f, 10.0f});
@@ -89,6 +98,69 @@ public:
     render_grid(mvp, 1.0f);
 
     immediate_renderer_->submit_to_renderer();
+#endif  // 0
+  }
+
+private:
+  hi::PhysicalFileLocator fixtures_locator_;
+  hi::PhysicalFileLocator asteroids_locator_;
+  le::ResourceManager resource_manager_;
+
+  le::Camera main_camera_;
+  // le::OrbitCameraController camera_controller_{&main_camera_, fl::Vec3::zero};
+  le::FirstPersonCameraController camera_controller_{&main_camera_, 0.1f, 0.08f};
+  // le::TopDownCameraController camera_controller_{&main_camera_, {fl::Vec3::up, 0.0f}, 20.0f};
+
+  le::Model* model_ = nullptr;
+
+  nu::ScopedPtr<ca::ImmediateRenderer> immediate_renderer_;
+};
+#endif  // 0
+
+class ModelViewerLayer : public le::EngineLayer {
+public:
+  bool on_initialize() override {
+    resource_manager().set_locator(nu::makeScopedRefPtr<hi::PhysicalFileLocator>(
+        nu::FilePath{R"(C:\Code\AsteroidDefender\assets)"}));
+
+    immediate_renderer_ = ca::ImmediateRenderer(&renderer());
+
+#if 0
+#if OS(WIN)
+    fixtures_locator_.setRootPath(nu::FilePath{R"(C:\Code\silhouette\tests\fixtures)"});
+    asteroids_locator_.setRootPath(nu::FilePath{R"(C:\Code\AsteroidDefender\assets)"});
+#elif OS(POSIX)
+    fixtures_locator_.setRootPath(nu::FilePath{"/home/tilo/code/game/silhouette/tests/fixtures"});
+    asteroids_locator_.setRootPath(nu::FilePath{"/home/tilo/code/game/AsteroidDefender/assets"});
+#else
+#error Unsupported operating system.
+#endif
+
+    resource_manager_.add_resource_locator(&fixtures_locator_);
+    resource_manager_.add_resource_locator(&asteroids_locator_);
+#endif  // 0
+
+    model_ = resource_manager().get_render_model("enemy.dae");
+    if (!model_) {
+      LOG(Error) << "Could not load model.";
+      return false;
+    }
+
+    //    add_mouse_event_handler(&camera_controller_);
+    //    add_keyboard_event_handler(&camera_controller_);
+
+    return true;
+  }
+
+  void update(F32 delta) override {}
+
+  void on_render() override {
+    // fl::Mat4 mvp = fl::Mat4::identity;
+    fl::Mat4 mvp = fl::translationMatrix({0.1f, 0.1f, 0.0f});
+    le::renderModel(&renderer(), *model_, mvp);
+
+    render_grid(mvp);
+    immediate_renderer_->submit_to_renderer();
   }
 
 private:
@@ -107,18 +179,14 @@ private:
     }
   }
 
-  hi::PhysicalFileResourceLocator fixtures_locator_;
-  hi::PhysicalFileResourceLocator asteroids_locator_;
-  le::ResourceManager resource_manager_;
+  nu::Optional<ca::ImmediateRenderer> immediate_renderer_;
 
-  le::Camera main_camera_;
-  // le::OrbitCameraController camera_controller_{&main_camera_, fl::Vec3::zero};
-  le::FirstPersonCameraController camera_controller_{&main_camera_, 0.1f, 0.08f};
-  // le::TopDownCameraController camera_controller_{&main_camera_, {fl::Vec3::up, 0.0f}, 20.0f};
-
-  le::Model* model_ = nullptr;
-
-  nu::ScopedPtr<ca::ImmediateRenderer> immediate_renderer_;
+  le::RenderModel* model_ = nullptr;
 };
 
-CANVAS_APP(ModelViewerDelegate)
+int main() {
+  nu::Profiling profiler;
+  le::Engine engine;
+  engine.add_layer<ModelViewerLayer>();
+  return engine.run();
+}
