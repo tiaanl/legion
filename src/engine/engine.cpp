@@ -25,7 +25,7 @@ bool Engine::initialize(ca::Renderer* renderer) {
   renderer_ = renderer;
 
   if (!resource_manager_.has_locator()) {
-    resource_manager_.set_locator(nu::makeScopedRefPtr<hi::PhysicalFileLocator>());
+    resource_manager_.set_locator(nu::make_scoped_ref_ptr<hi::PhysicalFileLocator>());
   }
 
   resource_manager_.set_renderer(renderer);

@@ -27,9 +27,9 @@ ResourceManager::ResourceManager(nu::ScopedRefPtr<hi::Locator> locator, ca::Rend
     image_resources_{locator_},
     scene_resources_{locator_},
     shader_source_resources_{locator_} {
-  image_resources_.register_importer("png", nu::makeScopedPtr<PNGImageImporter>());
-  scene_resources_.register_importer("dae", nu::makeScopedPtr<le::ColladaModelImporter>(this));
-  shader_source_resources_.register_importer("glsl", nu::makeScopedPtr<ShaderSourceImporter>());
+  image_resources_.register_importer("png", nu::make_scoped_ptr<PNGImageImporter>());
+  scene_resources_.register_importer("dae", nu::make_scoped_ptr<le::ColladaModelImporter>(this));
+  shader_source_resources_.register_importer("glsl", nu::make_scoped_ptr<ShaderSourceImporter>());
 }
 
 bool ResourceManager::has_locator() const {
@@ -97,7 +97,7 @@ Texture* ResourceManager::get_texture(nu::StringView name) {
   }
 
   auto result =
-      texture_resources_.insert(name, nu::makeScopedPtr<Texture>(textureId, image->size()));
+      texture_resources_.insert(name, nu::make_scoped_ptr<Texture>(textureId, image->size()));
   return result.value().get();
 }
 
@@ -116,7 +116,7 @@ RenderModel* ResourceManager::get_render_model(nu::StringView name) {
 
   RenderModel render_model = RenderModel::create_from_scene(*scene, this, renderer_);
   auto result =
-      render_model_resources_.insert(name, nu::makeScopedPtr<RenderModel>(std::move(render_model)));
+      render_model_resources_.insert(name, nu::make_scoped_ptr<RenderModel>(std::move(render_model)));
 
   return result.value().get();
 }
@@ -136,7 +136,7 @@ el::Font* ResourceManager::get_font(nu::StringView name, I32 size) {
     return nullptr;
   }
 
-  auto font = nu::makeScopedPtr<el::Font>();
+  auto font = nu::make_scoped_ptr<el::Font>();
   if (!font->load(font_stream.get(), renderer_, size)) {
     return nullptr;
   }

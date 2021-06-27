@@ -17,7 +17,7 @@ public:
 
   template <typename T, typename... Args>
   void add_layer(Args&&... args) {
-    layers_.emplaceBack(nu::makeScopedPtr<T>(std::forward<Args>(args)...));
+    layers_.emplaceBack(nu::make_scoped_ptr<T>(std::forward<Args>(args)...));
   }
 
   LayersType& layers() {

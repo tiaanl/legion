@@ -120,7 +120,7 @@ private:
 class ModelViewerLayer : public le::EngineLayer {
 public:
   bool on_initialize() override {
-    resource_manager().set_locator(nu::makeScopedRefPtr<hi::PhysicalFileLocator>(
+    resource_manager().set_locator(nu::make_scoped_ref_ptr<hi::PhysicalFileLocator>(
         nu::FilePath{R"(C:\Code\AsteroidDefender\assets)"}));
 
     immediate_renderer_ = ca::ImmediateRenderer(&renderer());
