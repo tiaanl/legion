@@ -156,7 +156,7 @@ public:
 
   void on_render() override {
     // fl::Mat4 mvp = fl::Mat4::identity;
-    fl::Mat4 mvp = fl::translationMatrix({0.1f, 0.1f, 0.0f});
+    fl::Mat4 mvp = fl::translation_matrix({0.1f, 0.1f, 0.0f});
     le::renderModel(&renderer(), *model_, mvp);
 
     render_grid(mvp);

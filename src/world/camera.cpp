@@ -134,11 +134,11 @@ void Camera::invalidateView() {
 
 void Camera::updateProjectionMatrix() {
   m_projectionMatrix =
-      fl::perspectiveProjection(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
+      fl::perspective_projection(m_fieldOfView, m_aspectRatio, m_nearPlane, m_farPlane);
 }
 
 void Camera::updateViewMatrix() {
-  m_viewMatrix = fl::createViewMatrix(m_position, m_orientation);
+  m_viewMatrix = fl::create_view_matrix(m_position, m_orientation);
 
   fl::Mat4 t = fl::transpose(m_viewMatrix);
 
