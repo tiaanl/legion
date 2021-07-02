@@ -1,9 +1,9 @@
 #pragma once
 
-#include <elastic/Renderer/font.h>
+#include <elastic/renderer/font.h>
 
-#include "canvas/Utils/shader_source.h"
-#include "legion/Resources/Converters/renderer_importer.h"
+#include "canvas/utils/shader_source.h"
+#include "legion/resources/converters/renderer_importer.h"
 
 namespace le {
 

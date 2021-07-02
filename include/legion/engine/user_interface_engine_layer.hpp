@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 
 #include <elastic/context.h>
@@ -30,3 +31,4 @@ private:
 };
 
 }  // namespace le
+#endif  // 0

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "canvas/Windows/event.h"
-#include "legion/Controllers/camera_controller.h"
+#include "canvas/windows/event.h"
+#include "legion/controllers/camera_controller.h"
 
 namespace le {
 

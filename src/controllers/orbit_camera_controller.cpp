@@ -1,4 +1,4 @@
-#include "legion/Controllers/orbit_camera_controller.h"
+#include "legion/controllers/orbit_camera_controller.h"
 
 #include <floats/transform.h>
 

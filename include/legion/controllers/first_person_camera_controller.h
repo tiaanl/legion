@@ -1,9 +1,9 @@
 #pragma once
 
-#include "canvas/Windows/keyboard_event_handler_interface.h"
-#include "canvas/Windows/mouse_event_handler_interface.h"
+#include "canvas/windows/keyboard_event_handler_interface.h"
+#include "canvas/windows/mouse_event_handler_interface.h"
 #include "floats/vec3.h"
-#include "legion/Controllers/camera_controller.h"
+#include "legion/controllers/camera_controller.h"
 
 namespace le {
 

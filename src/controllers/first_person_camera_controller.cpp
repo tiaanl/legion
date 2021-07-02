@@ -1,6 +1,6 @@
-#include "legion/Controllers/first_person_camera_controller.h"
+#include "legion/controllers/first_person_camera_controller.h"
 
-#include "legion/World/camera.h"
+#include "legion/world/camera.h"
 
 namespace le {
 
