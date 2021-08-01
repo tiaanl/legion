@@ -31,7 +31,7 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
 #endif
 
   dst->vertexBufferId =
-      renderer->createVertexBuffer(vertexDefinition, buffer.data(), buffer.size() * sizeof(V));
+      renderer->create_vertex_buffer(vertexDefinition, buffer.data(), buffer.size() * sizeof(V));
 
   U32 vertexCount = static_cast<U32>(buffer.size());
   DCHECK(vertexCount % 3 == 0);
@@ -73,8 +73,8 @@ void createMaterial(ca::Renderer* renderer, le::ResourceManager* resourceManager
           break;
       }
 
-      auto textureId = renderer->createTexture(textureFormat, image->size(), image->data().data(),
-                                               image->data().size(), false);
+      auto textureId = renderer->create_texture(textureFormat, image->size(), image->data().data(),
+                                                image->data().size(), false);
       if (!textureId.isValid()) {
         return;
       }
@@ -97,9 +97,9 @@ void createMaterial(ca::Renderer* renderer, le::ResourceManager* resourceManager
     if (!vertexShader || !fragmentShader) {
       LOG(Error) << "Could not load shader. (diffuse_texture)";
     } else {
-      dst->programId = renderer->createProgram(*vertexShader, *fragmentShader);
-      dst->transformUniformId = renderer->createUniform("uTransform");
-      dst->textureUniformId = renderer->createUniform("uTexture");
+      dst->programId = renderer->create_program(*vertexShader, *fragmentShader);
+      dst->transformUniformId = renderer->create_uniform("uTransform");
+      dst->textureUniformId = renderer->create_uniform("uTexture");
     }
   } else {
     auto vertexShader = resourceManager->load_shader_source("diffuse_lopoly_v.glsl");
@@ -108,8 +108,8 @@ void createMaterial(ca::Renderer* renderer, le::ResourceManager* resourceManager
     if (!vertexShader || !fragmentShader) {
       LOG(Error) << "Could not load shader. (diffuse_lopoly)";
     } else {
-      dst->programId = renderer->createProgram(*vertexShader, *fragmentShader);
-      dst->transformUniformId = renderer->createUniform("uTransform");
+      dst->programId = renderer->create_program(*vertexShader, *fragmentShader);
+      dst->transformUniformId = renderer->create_uniform("uTransform");
     }
   }
 }

@@ -90,8 +90,8 @@ Texture* ResourceManager::get_texture(nu::StringView name) {
       break;
   }
 
-  auto textureId = renderer_->createTexture(textureFormat, image->size(), image->data().data(),
-                                            image->data().size(), false);
+  auto textureId = renderer_->create_texture(textureFormat, image->size(), image->data().data(),
+                                             image->data().size(), false);
   if (!textureId.isValid()) {
     return nullptr;
   }
@@ -115,8 +115,8 @@ RenderModel* ResourceManager::get_render_model(nu::StringView name) {
   }
 
   RenderModel render_model = RenderModel::create_from_scene(*scene, this, renderer_);
-  auto result =
-      render_model_resources_.insert(name, nu::make_scoped_ptr<RenderModel>(std::move(render_model)));
+  auto result = render_model_resources_.insert(
+      name, nu::make_scoped_ptr<RenderModel>(std::move(render_model)));
 
   return result.value().get();
 }
