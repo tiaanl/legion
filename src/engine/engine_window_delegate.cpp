@@ -11,8 +11,8 @@ EngineWindowDelegate::EngineWindowDelegate(Engine* engine)
 
 EngineWindowDelegate::~EngineWindowDelegate() = default;
 
-bool EngineWindowDelegate::onWindowCreated(ca::Window* window) {
-  if (!WindowDelegate::onWindowCreated(window)) {
+bool EngineWindowDelegate::on_window_created(ca::Window* window) {
+  if (!WindowDelegate::on_window_created(window)) {
     return false;
   }
 
@@ -29,7 +29,7 @@ bool EngineWindowDelegate::onWindowCreated(ca::Window* window) {
   return true;
 }
 
-void EngineWindowDelegate::onWindowResized(const fl::Size& size) {
+void EngineWindowDelegate::on_window_resized(const fl::Size& size) {
   for (auto& layer : engine_->layers_) {
     layer->on_resize(size);
   }
@@ -75,13 +75,13 @@ void EngineWindowDelegate::on_key_released(const ca::KeyEvent& evt) {
   }
 }
 
-void EngineWindowDelegate::tick(F32 delta) {
+void EngineWindowDelegate::on_tick(F32 delta) {
   for (auto& layer : engine_->layers_) {
     layer->update(delta);
   }
 }
 
-void EngineWindowDelegate::onRender(ca::Renderer* renderer) {
+void EngineWindowDelegate::on_render(ca::Renderer* renderer) {
   for (auto& layer : engine_->layers_) {
     layer->on_render();
   }

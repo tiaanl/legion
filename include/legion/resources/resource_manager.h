@@ -1,7 +1,7 @@
 #pragma once
 
-#include <elastic/Renderer/font.h>
-#include <hive/locator.h>
+#include <elastic/renderer/font.h>
+#include <hive/locator/locator.h>
 #include <hive/typed_resource.h>
 #include <nucleus/Memory/scoped_ref_ptr.h>
 #include <nucleus/hash.h>

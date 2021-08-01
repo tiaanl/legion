@@ -129,7 +129,7 @@ static void createNode(const si::Node& src, ModelNode* dst) {
 }
 
 RenderModel RenderModel::create_from_scene(si::Scene& scene, ResourceManager* resource_manager,
-                               ca::Renderer* renderer) {
+                                           ca::Renderer* renderer) {
   ca::VertexDefinition def;
   def.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Three);
   def.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Two);
@@ -137,7 +137,7 @@ RenderModel RenderModel::create_from_scene(si::Scene& scene, ResourceManager* re
 
   RenderModel model;
 
-  if (scene.meshes().isEmpty()) {
+  if (scene.meshes().empty()) {
     LOG(Warning) << "Model contains no geometry.";
     return {};
   }

@@ -1,9 +1,9 @@
-#include <canvas/Renderer/immediate_renderer.h>
 #include <canvas/app.h>
+#include <canvas/renderer/immediate_renderer.h>
 #include <floats/transform.h>
-#include <hive/physical_file_locator.h>
-#include <legion/Rendering/rendering.h>
-#include <legion/Resources/resource_manager.h>
+#include <hive/locator/physical_file_locator.h>
+#include <legion/rendering/rendering.h>
+#include <legion/resources/resource_manager.h>
 #include <nucleus/optional.h>
 
 #include <legion/engine/engine.hpp>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hive/importer.h>
+#include <hive/importer/importer.h>
 #include <silhouette/image.h>
 
 namespace le {

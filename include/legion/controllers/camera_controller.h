@@ -1,6 +1,6 @@
 #pragma once
 #include "canvas/Windows/event.h"
-#include "canvas/Windows/mouse_event_handler_interface.h"
+#include "canvas/Windows/mouse_event_receiver.h"
 #include "legion/World/camera.h"
 
 namespace le {

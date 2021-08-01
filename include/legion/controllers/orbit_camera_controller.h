@@ -5,7 +5,7 @@
 
 namespace le {
 
-class OrbitCameraController : public CameraController, public ca::MouseEventHandlerInterface {
+class OrbitCameraController : public CameraController, public ca::MouseEventReceiver {
 public:
   NU_DELETE_COPY_AND_MOVE(OrbitCameraController);
 

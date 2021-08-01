@@ -1,4 +1,3 @@
-#if 0
 #include "legion/engine/user_interface_engine_layer.hpp"
 
 namespace le {
@@ -52,4 +51,3 @@ void UserInterfaceEngineLayer::on_render() {
 }
 
 }  // namespace le
-#endif

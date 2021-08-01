@@ -1,15 +1,15 @@
 #pragma once
 
-#include "canvas/windows/keyboard_event_handler_interface.h"
-#include "canvas/windows/mouse_event_handler_interface.h"
+#include "canvas/windows/keyboard_event_receiver.h"
+#include "canvas/windows/mouse_event_receiver.h"
 #include "floats/vec3.h"
 #include "legion/controllers/camera_controller.h"
 
 namespace le {
 
 class FirstPersonCameraController : public CameraController,
-                                    public ca::MouseEventHandlerInterface,
-                                    public ca::KeyboardEventHandlerInterface {
+                                    public ca::MouseEventReceiver,
+                                    public ca::KeyboardEventReceiver {
 public:
   NU_DELETE_COPY_AND_MOVE(FirstPersonCameraController);
 

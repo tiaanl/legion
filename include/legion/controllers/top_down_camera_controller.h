@@ -1,14 +1,14 @@
 #pragma once
 
-#include "canvas/Windows/keyboard_event_handler_interface.h"
+#include "canvas/Windows/keyboard_event_receiver.h"
 #include "floats/plane.h"
 #include "legion/Controllers/camera_controller.h"
 
 namespace le {
 
 class TopDownCameraController : public CameraController,
-                                public ca::MouseEventHandlerInterface,
-                                public ca::KeyboardEventHandlerInterface {
+                                public ca::MouseEventReceiver,
+                                public ca::KeyboardEventReceiver {
 public:
   TopDownCameraController(Camera* camera, const fl::Plane& worldPlane, F32 height);
 

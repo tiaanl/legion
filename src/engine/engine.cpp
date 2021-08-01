@@ -1,10 +1,7 @@
 #include "legion/engine/engine.hpp"
 
-#include <canvas/Windows/window.h>
 #include <canvas/app.h>
-#include <canvas/message_loop/message_pump_ui.h>
-#include <hive/physical_file_locator.h>
-#include <nucleus/message_loop/message_loop.h>
+#include <hive/locator/physical_file_locator.h>
 
 namespace le {
 

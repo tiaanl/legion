@@ -4,8 +4,7 @@ namespace le {
 
 class ResourceManager;
 
-class EngineLayer : public ca::MouseEventHandlerInterface,
-                    public ca::KeyboardEventHandlerInterface {
+class EngineLayer : public ca::MouseEventReceiver, public ca::KeyboardEventReceiver {
 public:
   virtual ~EngineLayer() = default;
 

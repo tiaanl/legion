@@ -1,12 +1,12 @@
 #pragma once
 
+#include <canvas/renderer/types.h>
+#include <canvas/utils/color.h>
+#include <floats/mat4.h>
+#include <nucleus/containers/dynamic_array.h>
 #include <silhouette/scene.h>
 
-#include "canvas/Renderer/types.h"
-#include "canvas/Utils/color.h"
-#include "floats/mat4.h"
-#include "legion/Resources/texture.h"
-#include "nucleus/Containers/dynamic_array.h"
+#include "legion/resources/texture.h"
 
 namespace ca {
 class Renderer;

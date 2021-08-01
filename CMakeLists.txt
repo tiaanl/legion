@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.19)
+
 project(legion)
 
-add_subdirectory(../canvas canvas)
+add_subdirectory(../elastic elastic)
 add_subdirectory(../hive hive)
+add_subdirectory(../silhouette silhouette)
 
 set(HEADER_FILES
     include/legion/controllers/camera_controller.h
@@ -45,7 +47,7 @@ set(SOURCE_FILES
     )
 
 nucleus_add_library(legion ${HEADER_FILES} ${SOURCE_FILES})
-target_link_libraries(legion PUBLIC canvas hive silhouette elastic)
+target_link_libraries(legion PUBLIC canvas elastic hive silhouette)
 
 set(TEST_FILES
     tests/resources/texture_converter_tests.cpp
