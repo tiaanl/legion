@@ -1,14 +1,14 @@
-#include "legion/Resources/render_model.h"
+#include "legion/resources/render_model.h"
 
-#include <canvas/Renderer/renderer.h>
+#include <canvas/renderer/renderer.h>
 
-#include "legion/Resources/resource_manager.h"
+#include "legion/resources/resource_manager.h"
 
 namespace le {
 
 static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& vertexDefinition,
                        const si::Mesh& src, Mesh* dst) {
-  dst->materialIndex = src.materialIndex;
+  dst->materialIndex = src.material_index;
 
   struct V {
     fl::Vec3 position;
@@ -16,11 +16,12 @@ static void createMesh(ca::Renderer* renderer, const ca::VertexDefinition& verte
     ca::Color color;
   };
 
-  DCHECK(src.positions.size() == src.texCoords.size());
+  DCHECK(src.positions.size() == src.tex_coords.size() &&
+         src.positions.size() == src.normals.size());
 
   auto buffer = nu::DynamicArray<V>::withInitialCapacity(src.positions.size());
   for (MemSize i = 0; i < src.positions.size(); ++i) {
-    buffer.emplaceBack(src.positions[i], src.texCoords[i], ca::Color::red);
+    buffer.emplaceBack(src.positions[i], src.tex_coords[i], ca::Color::red);
   }
 
 #if 0

@@ -1,7 +1,9 @@
-#include "legion/Resources/resource_manager.h"
+#include "legion/resources/resource_manager.h"
 
-#include <legion/Resources/Converters/font_importer.hpp>
 #include <utility>
+
+#include "legion/resources/converters/font_importer.hpp"
+#include "legion/resources/converters/obj_scene_importer.h"
 
 namespace nu {
 
@@ -29,6 +31,7 @@ ResourceManager::ResourceManager(nu::ScopedRefPtr<hi::Locator> locator, ca::Rend
     shader_source_resources_{locator_} {
   image_resources_.register_importer("png", nu::make_scoped_ptr<PNGImageImporter>());
   scene_resources_.register_importer("dae", nu::make_scoped_ptr<le::ColladaModelImporter>(this));
+  scene_resources_.register_importer("obj", nu::make_scoped_ptr<le::ObjSceneImporter>(this));
   shader_source_resources_.register_importer("glsl", nu::make_scoped_ptr<ShaderSourceImporter>());
 }
 

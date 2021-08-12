@@ -18,6 +18,7 @@ set(HEADER_FILES
     include/legion/rendering/rendering.h
     include/legion/resources/converters/collada_model_importer.h
     include/legion/resources/converters/font_importer.hpp
+    include/legion/resources/converters/obj_scene_importer.h
     include/legion/resources/converters/png_imageImporter.h
     include/legion/resources/converters/renderer_importer.h
     include/legion/resources/converters/shader_source_importer.h
@@ -38,6 +39,7 @@ set(SOURCE_FILES
     src/rendering/rendering.cpp
     src/resources/converters/collada_model_importer.cpp
     src/resources/converters/font_importer.cpp
+    src/resources/converters/obj_scene_importer.cpp
     src/resources/converters/png_imageImporter.cpp
     src/resources/converters/shader_source_importer.cpp
     src/resources/converters/texture_converter.cpp
