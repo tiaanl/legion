@@ -2,6 +2,8 @@
 
 #include <legion/Resources/resource_manager.h>
 
+#include <silhouette/codec/scene/collada.hpp>
+
 namespace le {
 
 ColladaModelImporter::ColladaModelImporter(ResourceManager* resource_manager)
@@ -13,10 +15,13 @@ ColladaModelImporter::ColladaModelImporter(ResourceManager* resource_manager)
 
 bool ColladaModelImporter::import(nu::StringView name, nu::InputStream* stream,
                                   si::Scene* storage) {
-  if (!storage->load_from_collada(stream)) {
+  auto maybe_scene = si::load_scene_from_collada(stream);
+  if (!maybe_scene.has_value()) {
     LOG(Error) << "Could not load geometry";
     return false;
   }
+
+  *storage = *maybe_scene;
 
   return true;
 }
