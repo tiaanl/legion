@@ -40,11 +40,11 @@ bool ResourceManager::has_locator() const {
 }
 
 void ResourceManager::set_locator(nu::ScopedRefPtr<hi::Locator> locator) {
-  locator_ = locator;
+  locator_ = std::move(locator);
 
-  image_resources_.set_locator(locator);
-  scene_resources_.set_locator(locator);
-  shader_source_resources_.set_locator(locator);
+  image_resources_.set_locator(locator_);
+  scene_resources_.set_locator(locator_);
+  shader_source_resources_.set_locator(locator_);
 }
 
 void ResourceManager::set_renderer(ca::Renderer* renderer) {

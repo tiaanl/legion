@@ -4,8 +4,8 @@
 #include <hive/locator/physical_file_locator.h>
 #include <legion/rendering/rendering.h>
 #include <legion/resources/resource_manager.h>
-#include <nucleus/optional.h>
 
+#include <hive/locator/composite_locator.hpp>
 #include <legion/engine/engine.hpp>
 
 #if 0
@@ -120,9 +120,6 @@ private:
 class ModelViewerLayer : public le::EngineLayer {
 public:
   bool on_initialize() override {
-    resource_manager().set_locator(nu::make_scoped_ref_ptr<hi::PhysicalFileLocator>(
-        nu::FilePath{R"(C:\Code\AsteroidDefender\assets)"}));
-
     immediate_renderer_ = ca::ImmediateRenderer(&renderer());
 
 #if 0
@@ -140,7 +137,7 @@ public:
     resource_manager_.add_resource_locator(&asteroids_locator_);
 #endif  // 0
 
-    model_ = resource_manager().get_render_model("enemy.dae");
+    model_ = resource_manager().get_render_model("postbox.obj");
     if (!model_) {
       LOG(Error) << "Could not load model.";
       return false;
@@ -152,15 +149,61 @@ public:
     return true;
   }
 
+public:
+  void on_mouse_moved(const ca::MouseEvent& evt) override {
+    if (is_dragging_camera_) {
+      camera_horizontal_rotation_ += static_cast<F32>(evt.pos.x - camera_start_drag_.x);
+      camera_vertical_rotation_ += static_cast<F32>(evt.pos.y - camera_start_drag_.y);
+      camera_start_drag_ = evt.pos;
+    }
+  }
+
+  bool on_mouse_pressed(const ca::MouseEvent& evt) override {
+    if (evt.button == ca::MouseEvent::Button::Left) {
+      is_dragging_camera_ = true;
+      camera_start_drag_ = evt.pos;
+    }
+
+    return true;
+  }
+
+  void on_mouse_released(const ca::MouseEvent& evt) override {
+    if (evt.button == ca::MouseEvent::Button::Left) {
+      is_dragging_camera_ = false;
+    }
+  }
+
+  void on_mouse_wheel(const ca::MouseWheelEvent& evt) override {
+    camera_distance_from_origin_ -= static_cast<F32>(evt.wheelOffset.y);
+  }
+
+  void on_key_released(const ca::KeyEvent& evt) override {
+    if (evt.key == ca::Key::G) {
+      show_grid_ = !show_grid_;
+    }
+  }
+
   void update(F32 delta) override {}
 
   void on_render() override {
-    // fl::Mat4 mvp = fl::Mat4::identity;
-    fl::Mat4 mvp = fl::translation_matrix({0.1f, 0.1f, 0.0f});
-    le::renderModel(&renderer(), *model_, mvp);
+    renderer().state().depth_test(true);
 
-    render_grid(mvp);
-    immediate_renderer_->submit_to_renderer();
+    auto projection = fl::perspective_projection(
+        fl::Angle::fromDegrees(45.0f), fl::aspect_ratio(renderer().size()), 0.01f, 100.0f);
+
+    auto horizontal_rotation =
+        fl::rotation_matrix(fl::Vec3::up, fl::Angle::fromDegrees(camera_horizontal_rotation_));
+    auto vertical_rotation =
+        fl::rotation_matrix(fl::Vec3::right, fl::Angle::fromDegrees(camera_vertical_rotation_));
+    auto view = fl::translation_matrix(fl::Vec3::forward * camera_distance_from_origin_) *
+                vertical_rotation * horizontal_rotation;
+
+    le::renderModel(&renderer(), *model_, projection * view);
+
+    if (show_grid_) {
+      render_grid(projection * view);
+      immediate_renderer_->submit_to_renderer();
+    }
   }
 
 private:
@@ -182,11 +225,34 @@ private:
   nu::Optional<ca::ImmediateRenderer> immediate_renderer_;
 
   le::RenderModel* model_ = nullptr;
+
+  bool is_dragging_camera_ = false;
+  F32 camera_horizontal_rotation_ = 0.0f;
+  F32 camera_vertical_rotation_ = 0.0f;
+  fl::Pos camera_start_drag_;
+  F32 camera_distance_from_origin_ = 5.0f;
+
+  bool show_grid_ = true;
 };
+
+void set_engine_resource_locator(le::Engine& engine) {
+  nu::DynamicArray<nu::ScopedRefPtr<hi::Locator>> locators = {
+      nu::make_scoped_ref_ptr<hi::PhysicalFileLocator>(
+          nu::FilePath{R"(C:\Code\AsteroidDefender\assets)"}),
+      nu::make_scoped_ref_ptr<hi::PhysicalFileLocator>(
+          nu::FilePath{R"(C:\Code\silhouette\assets)"}),
+      nu::make_scoped_ref_ptr<hi::PhysicalFileLocator>(
+          nu::FilePath{R"(C:\Code\silhouette\tests\fixtures)"})};
+  engine.resource_manager().set_locator(
+      nu::make_scoped_ref_ptr<hi::CompositeLocator>(std::move(locators)));
+}
 
 int main() {
   nu::Profiling profiler;
   le::Engine engine;
+
+  set_engine_resource_locator(engine);
+
   engine.add_layer<ModelViewerLayer>();
   return engine.run();
 }
