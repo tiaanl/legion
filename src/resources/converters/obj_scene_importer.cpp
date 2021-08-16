@@ -14,7 +14,10 @@ ObjSceneImporter::ObjSceneImporter(ResourceManager* resource_manager)
 }
 
 bool ObjSceneImporter::import(nu::StringView name, nu::InputStream* stream, si::Scene* storage) {
-  auto maybe_scene = si::load_scene_from_obj(stream);
+  auto maybe_scene = si::load_scene_from_obj(
+      stream, [this](nu::StringView material_name) -> nu::ScopedPtr<nu::InputStream> {
+        return resource_manager_->locator()->locate(material_name);
+      });
   if (!maybe_scene.has_value()) {
     LOG(Error) << "Could not load geometry";
     return false;

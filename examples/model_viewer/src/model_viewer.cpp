@@ -152,8 +152,8 @@ public:
 public:
   void on_mouse_moved(const ca::MouseEvent& evt) override {
     if (is_dragging_camera_) {
-      camera_horizontal_rotation_ += static_cast<F32>(evt.pos.x - camera_start_drag_.x);
-      camera_vertical_rotation_ += static_cast<F32>(evt.pos.y - camera_start_drag_.y);
+      camera_horizontal_rotation_ += static_cast<F32>(evt.pos.x - camera_start_drag_.x) * 0.5f;
+      camera_vertical_rotation_ += static_cast<F32>(evt.pos.y - camera_start_drag_.y) * 0.5f;
       camera_start_drag_ = evt.pos;
     }
   }

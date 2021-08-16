@@ -21,7 +21,10 @@ public:
   explicit ResourceManager(nu::ScopedRefPtr<hi::Locator> locator = {},
                            ca::Renderer* renderer = nullptr);
 
-  bool has_locator() const;
+  NU_NO_DISCARD bool has_locator() const;
+  NU_NO_DISCARD const nu::ScopedRefPtr<hi::Locator>& locator() const {
+    return locator_;
+  }
   void set_locator(nu::ScopedRefPtr<hi::Locator> locator);
 
   void set_renderer(ca::Renderer* renderer);
