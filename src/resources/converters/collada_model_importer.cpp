@@ -21,7 +21,7 @@ bool ColladaModelImporter::import(nu::StringView name, nu::InputStream* stream,
     return false;
   }
 
-  *storage = *maybe_scene;
+  *storage = std::move(maybe_scene.value());
 
   return true;
 }
