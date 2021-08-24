@@ -2,7 +2,7 @@
 
 namespace le {
 
-bool FontImporter::import(nu::StringView name, nu::InputStream* stream, el::Font* storage) {
+bool FontImporter::import(nu::InputStream* stream, el::Font* storage) {
   return storage->load(stream, renderer_, 10);
 }
 

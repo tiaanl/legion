@@ -14,7 +14,7 @@ public:
   FontImporter() = default;
   ~FontImporter() override = default;
 
-  bool import(nu::StringView name, nu::InputStream* stream, el::Font* storage) override;
+  bool import(nu::InputStream* stream, el::Font* storage) override;
 };
 
 }  // namespace le

@@ -2,8 +2,7 @@
 
 namespace le {
 
-bool ShaderSourceImporter::import(nu::StringView name, nu::InputStream* stream,
-                                  ca::ShaderSource* storage) {
+bool ShaderSourceImporter::import(nu::InputStream* stream, ca::ShaderSource* storage) {
   return storage->loadFromStream(stream);
 }
 

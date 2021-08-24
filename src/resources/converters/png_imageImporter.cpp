@@ -4,10 +4,9 @@
 
 namespace le {
 
-bool PNGImageImporter::import(nu::StringView name, nu::InputStream* stream, si::Image* storage) {
+bool PNGImageImporter::import(nu::InputStream* stream, si::Image* storage) {
   auto maybe_image = si::load_image_from_png(stream);
   if (!maybe_image.has_value()) {
-    LOG(Warning) << "Could not load image. (" << name << ")";
     return false;
   }
 

@@ -13,8 +13,7 @@ ColladaModelImporter::ColladaModelImporter(ResourceManager* resource_manager)
   m_vertexDefinition.addAttribute(ca::ComponentType::Float32, ca::ComponentCount::Four);
 }
 
-bool ColladaModelImporter::import(nu::StringView name, nu::InputStream* stream,
-                                  si::Scene* storage) {
+bool ColladaModelImporter::import(nu::InputStream* stream, si::Scene* storage) {
   auto maybe_scene = si::load_scene_from_collada(stream);
   if (!maybe_scene.has_value()) {
     LOG(Error) << "Could not load geometry";

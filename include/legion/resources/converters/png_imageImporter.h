@@ -12,7 +12,7 @@ public:
   PNGImageImporter() = default;
   ~PNGImageImporter() override = default;
 
-  bool import(nu::StringView name, nu::InputStream* stream, si::Image* storage) override;
+  bool import(nu::InputStream* stream, si::Image* storage) override;
 };
 
 }  // namespace le

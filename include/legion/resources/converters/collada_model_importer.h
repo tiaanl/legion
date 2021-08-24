@@ -13,7 +13,7 @@ class ColladaModelImporter : public hi::Importer<si::Scene> {
 public:
   explicit ColladaModelImporter(ResourceManager* resource_manager);
 
-  bool import(nu::StringView name, nu::InputStream* stream, si::Scene* storage) override;
+  bool import(nu::InputStream* stream, si::Scene* storage) override;
 
 private:
   ResourceManager* resource_manager_;

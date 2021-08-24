@@ -12,7 +12,7 @@ public:
   ShaderSourceImporter() = default;
   ~ShaderSourceImporter() override = default;
 
-  bool import(nu::StringView name, nu::InputStream* stream, ca::ShaderSource* storage) override;
+  bool import(nu::InputStream* stream, ca::ShaderSource* storage) override;
 };
 
 }  // namespace le
