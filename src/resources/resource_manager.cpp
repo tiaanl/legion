@@ -95,7 +95,7 @@ Texture* ResourceManager::get_texture(nu::StringView name) {
 
   auto textureId = renderer_->create_texture(textureFormat, image->size(), image->data().data(),
                                              image->data().size(), false);
-  if (!textureId.isValid()) {
+  if (!textureId.is_valid()) {
     return nullptr;
   }
 

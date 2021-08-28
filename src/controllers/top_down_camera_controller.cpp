@@ -52,7 +52,7 @@ void TopDownCameraController::on_mouse_released(const ca::MouseEvent& evt) {
 
 void TopDownCameraController::on_mouse_wheel(const ca::MouseWheelEvent& evt) {
   // m_camera->setFieldOfView(m_camera->fieldOfView() + ca::degrees(-offset.y));
-  m_height += -static_cast<F32>(evt.wheelOffset.y);
+  m_height += -static_cast<F32>(evt.wheelOffset.y) * 5.0f;
 }
 
 void TopDownCameraController::on_key_pressed(const ca::KeyEvent& evt) {

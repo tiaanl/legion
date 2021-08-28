@@ -76,7 +76,7 @@ void createMaterial(ca::Renderer* renderer, le::ResourceManager* resourceManager
 
       auto textureId = renderer->create_texture(textureFormat, image->size(), image->data().data(),
                                                 image->data().size(), false);
-      if (!textureId.isValid()) {
+      if (!textureId.is_valid()) {
         return;
       }
 
@@ -89,7 +89,7 @@ void createMaterial(ca::Renderer* renderer, le::ResourceManager* resourceManager
   }
 
   dst->type = MaterialType::DiffuseColor;
-  if (dst->texture.id) {
+  if (dst->texture.id.is_valid()) {
     dst->type = MaterialType::Textured;
 
     auto vertexShader = resourceManager->load_shader_source("diffuse_texture_v.glsl");
